@@ -1,6 +1,6 @@
 {
   "name": "@pretendonetwork/cave-types",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Type declarations for the cave API used in the 3DS Miiverse applet",
   "main": "cave.js",
   "scripts": {
