@@ -1,0 +1,13 @@
+{
+  "name": "@pretendonetwork/wiiu-filter-types",
+  "version": "1.0.0",
+  "description": "Type declarations for the wiiuFilter API used in Miiverse on WiiU",
+  "main": "filter.js",
+  "scripts": {
+    "clean": "npx rimraf --glob '*.{js,map}'",
+	"build": "npm run clean && npx tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "types": "./index.d.ts"
+}
