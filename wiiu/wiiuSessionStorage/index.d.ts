@@ -1,4 +1,4 @@
-import type WiiUSessionStorage from './session-storage';
+import type WiiUSessionStorageAPI from './session-storage';
 export * from './session-storage';
 
 declare global {
@@ -6,11 +6,11 @@ declare global {
 		/**
 		 * Used by applets to interact with the browsers sessionStorage
 		 */
-		wiiuSessionStorage: WiiUSessionStorage;
+		wiiuSessionStorage: WiiUSessionStorageAPI;
 	}
 
 	/**
 	 * Used by applets to interact with the browsers sessionStorage
 	 */
-	const wiiuSessionStorage: WiiUSessionStorage;
+	const wiiuSessionStorage: WiiUSessionStorageAPI;
 }
