@@ -1,0 +1,89 @@
+// TODO - Name these fields better?
+export const enum SoundEffects {
+	SE_BAR_BTN = 'SE_BAR_BTN',
+	SE_BAR_BTN_CHECK = 'SE_BAR_BTN_CHECK',
+	SE_BAR_BTN_CHECK_TOUCH_OFF = 'SE_BAR_BTN_CHECK_TOUCH_OFF',
+	SE_BAR_BTN_TOUCH_OFF = 'SE_BAR_BTN_TOUCH_OFF',
+	SE_BAR_CANCEL = 'SE_BAR_CANCEL',
+	SE_BAR_CANCEL_TOUCH_OFF = 'SE_BAR_CANCEL_TOUCH_OFF',
+	SE_BAR_DECIDE = 'SE_BAR_DECIDE',
+	SE_BAR_DECIDE_TOUCH_OFF = 'SE_BAR_DECIDE_TOUCH_OFF',
+	SE_BAR_ERROR_APPEAR = 'SE_BAR_ERROR_APPEAR',
+	SE_BAR_SCROLL = 'SE_BAR_SCROLL',
+	SE_BAR_SCROLLBAR_SELECT = 'SE_BAR_SCROLLBAR_SELECT',
+	SE_BAR_SCROLL_END = 'SE_BAR_SCROLL_END',
+	SE_BAR_SCROLL_MSG = 'SE_BAR_SCROLL_MSG',
+	SE_BAR_SUB_DECIDE = 'SE_BAR_SUB_DECIDE',
+	SE_BAR_SUB_DECIDE_TOUCH_OFF = 'SE_BAR_SUB_DECIDE_TOUCH_OFF',
+	SE_BAR_WAITING = 'SE_BAR_WAITING',
+	SE_CMN_CURSOR_SELECT = 'SE_CMN_CURSOR_SELECT',
+	SE_CMN_TOUCH_CANCEL = 'SE_CMN_TOUCH_CANCEL',
+	SE_CMN_TOUCH_ON = 'SE_CMN_TOUCH_ON',
+	SE_OLV_CURTAIN_CLOSE = 'SE_OLV_CURTAIN_CLOSE',
+	SE_OLV_CURTAIN_OPEN = 'SE_OLV_CURTAIN_OPEN',
+	SE_OLV_CURTAIN_SWAP_1 = 'SE_OLV_CURTAIN_SWAP_1',
+	SE_OLV_CURTAIN_SWAP_2 = 'SE_OLV_CURTAIN_SWAP_2',
+	SE_OLV_INVALID = 'SE_OLV_INVALID',
+	SE_SF_CANCEL_TOUCHOFF = 'SE_SF_CANCEL_TOUCHOFF',
+	SE_SF_COPY_TOUCHOFF = 'SE_SF_COPY_TOUCHOFF',
+	SE_SF_LAST5MIN = 'SE_SF_LAST5MIN',
+	SE_SF_TOUCHCANCEL = 'SE_SF_TOUCHCANCEL',
+	SE_SF_TOUCH_ON = 'SE_SF_TOUCH_ON',
+	SE_SF_VW_TVNOMI = 'SE_SF_VW_TVNOMI',
+	SE_SF_VW_TVNOMI2 = 'SE_SF_VW_TVNOMI2',
+	SE_SF_ZOOM_DOWN = 'SE_SF_ZOOM_DOWN',
+	SE_SF_ZOOM_DOWN_LIMIT = 'SE_SF_ZOOM_DOWN_LIMIT',
+	SE_SF_ZOOM_UP = 'SE_SF_ZOOM_UP',
+	SE_SF_ZOOM_UP_LIMIT = 'SE_SF_ZOOM_UP_LIMIT',
+	SE_WAVE_HWKEY_MENU_TRG = 'SE_WAVE_HWKEY_MENU_TRG',
+	SE_WAVE_NAVI_DRC_TRG = 'SE_WAVE_NAVI_DRC_TRG',
+	SE_WAVE_NAVI_WPAD_TRG = 'SE_WAVE_NAVI_WPAD_TRG',
+	BGM_OLV_BOOT = 'BGM_OLV_BOOT',
+	SE_WAVE_DRC_TOUCH_TRG = 'SE_WAVE_DRC_TOUCH_TRG',
+	SE_WAVE_OK = 'SE_WAVE_OK',
+	SE_WAVE_OK_SUB = 'SE_WAVE_OK_SUB',
+	SE_WAVE_BALLOON_CLOSE = 'SE_WAVE_BALLOON_CLOSE',
+	SE_WAVE_BALLOON_OPEN = 'SE_WAVE_BALLOON_OPEN',
+	SE_WAVE_CHECKBOX_UNCHECK = 'SE_WAVE_CHECKBOX_UNCHECK',
+	SE_WAVE_CHECKBOX_CHECK = 'SE_WAVE_CHECKBOX_CHECK',
+	SE_WAVE_MII_CANCEL = 'SE_WAVE_MII_CANCEL',
+	SE_WAVE_MII_ADD = 'SE_WAVE_MII_ADD',
+	BGM_OLV_INIT = 'BGM_OLV_INIT',
+	BGM_OLV_SETTING = 'BGM_OLV_SETTING',
+	BGM_OLV_MAIN = 'BGM_OLV_MAIN'
+};
+
+export type SoundEffect = `${SoundEffects}`;
+
+export default interface WiiUSoundAPI {
+	/**
+	 * Unknown. Plays a sound by an ID?
+	 * @param unk1 - Unknown
+	 * @param unk2 - Unknown
+	 * @returns An object. Always empty
+	 */
+	playSound: (unk1: number, unk2: number) => {};
+
+	/**
+	 * Plays the given sound
+	 * @param label - Label for the sound
+	 * @param unk - Unknown
+	 * @returns An object. Always empty
+	 *
+	 * @remark
+	 *
+	 * Not all labels are available in every applet. Using an unsupported label plays no sound
+	 */
+	playSoundByName: (label: SoundEffect, unk: number) => {};
+
+	/**
+	 * Unknown. Stops a sound?
+	 * @remark
+	 *
+	 * Only seen in the eShop
+	 *
+	 * @param unk - Unknown
+	 * @returns An object. Always empty
+	 */
+	stopNfcSound: (unk: number) => {};
+}
