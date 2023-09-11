@@ -1,0 +1,13 @@
+{
+  "name": "@pretendonetwork/wiiu-keyboard-types",
+  "version": "1.0.0",
+  "description": "Type declarations for the wiiuKeyboard API used in WiiU applets",
+  "main": "keyboard.js",
+  "scripts": {
+    "clean": "npx rimraf --glob '*.{js,map}'",
+	"build": "npm run clean && npx tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "types": "./index.d.ts"
+}

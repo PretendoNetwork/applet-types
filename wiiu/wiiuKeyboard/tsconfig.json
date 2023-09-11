@@ -1,0 +1,21 @@
+{
+	"compilerOptions": {
+		"target": "es5",
+		"strict": true,
+		"module": "commonjs",
+		"sourceMap": true,
+		"esModuleInterop": true,
+		"moduleResolution": "node",
+		"baseUrl": ".",
+		"removeComments": true,
+		"lib": ["dom", "es2022"],
+		"noEmitOnError": true,
+		"paths": {
+			"@/*": ["./*"]
+		}
+	},
+    "files": [
+        "index.d.ts",
+        "keyboard.ts"
+    ]
+}
