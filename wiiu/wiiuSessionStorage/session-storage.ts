@@ -1,24 +1,24 @@
 export default interface WiiUSessionStorageAPI {
 	/**
-	 * Unknown. Assumed to be the length, but returns a boolean?
-	 * @returns Unknown
+	 * Gets the number of items in localStorage
+	 * @returns The length
 	 */
-	length: () => boolean;
+	length: () => number;
 
 	/**
-	 * Sets an item in the sessionStorage
+	 * Sets an item in the localStorage
 	 * @param key - Items key
 	 * @param value - Items value
-	 * @returns Unknown. Keys index?
+	 * @returns Unknown. True if was a success?
 	 */
-	setItem: (key: string, value: string) => number;
+	setItem: (key: string, value: string) => boolean;
 
 	/**
-	 * Gets a key?
-	 * @param unk - Unknown
-	 * @returns Items key?
+	 * Gets a key at the given index
+	 * @param index - Index of the item
+	 * @returns Items key
 	 */
-	key: (unk: boolean) => string;
+	key: (index: number) => string;
 
 	/**
 	 * Looks up an item from the sessionStorage
