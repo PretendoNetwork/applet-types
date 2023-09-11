@@ -1,0 +1,13 @@
+{
+  "name": "@pretendonetwork/wiiu-curtain-types",
+  "version": "1.0.0",
+  "description": "Type declarations for the wiiuCurtain API used in the eShop on WiiU",
+  "main": "curtain.js",
+  "scripts": {
+    "clean": "npx rimraf --glob '*.{js,map}'",
+	"build": "npm run clean && npx tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "types": "./index.d.ts"
+}
