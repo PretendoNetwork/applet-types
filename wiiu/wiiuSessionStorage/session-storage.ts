@@ -18,14 +18,14 @@ export default interface WiiUSessionStorageAPI {
 	 * @param index - Index of the item
 	 * @returns Items key
 	 */
-	key: (index: number) => string;
+	key: (index: number) => string | null;
 
 	/**
 	 * Looks up an item from the sessionStorage
 	 * @param key - Items key
 	 * @returns Items value
 	 */
-	getItem: (key: string) => string;
+	getItem: (key: string) => string | null;
 
 	/**
 	 * Removes an item from the sessionStorage
