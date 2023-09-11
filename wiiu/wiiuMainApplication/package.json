@@ -1,0 +1,13 @@
+{
+  "name": "@pretendonetwork/wiiu-main-application-types",
+  "version": "1.0.0",
+  "description": "Type declarations for the wiiuMainApplication API used in Miiverse on WiiU",
+  "main": "main-application.js",
+  "scripts": {
+    "clean": "npx rimraf --glob '*.{js,map}'",
+	"build": "npm run clean && npx tsc"
+  },
+  "keywords": [],
+  "author": "",
+  "types": "./index.d.ts"
+}
