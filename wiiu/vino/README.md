@@ -1,5 +1,5 @@
 # vino
-The `vino` API is used by Miiverse on the WiiU to interact with many system APIs and hardware features. These types provide intellisense and type safety
+The `vino` API is used by TVii on the WiiU to interact with many system APIs and hardware features. These types provide intellisense and type safety
 
 ### _**DISCLAIMER:**_ **WIP. MANY FUNCTIONS HAVE UNKNOWN USES AND PARAMETERS, AND SOME HAVE KNOWN SIGNATURES/TYPES**
 
