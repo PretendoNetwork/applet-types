@@ -279,10 +279,10 @@ export default interface VinoAPI {
 	navi_setAreaOverSearch: (unk: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Sets different type of movement of navi_target, -1 disables it completely)
+	 * @param flag - (-1, 0, 1)
 	 */
-	navi_setMoveMethod: (unk: number) => void;
+	navi_setMoveMethod: (flag: number) => void;
 
 	/**
 	 * Unknown
@@ -338,10 +338,16 @@ export default interface VinoAPI {
 	lyt_setIsEnableWhiteMask: (unk: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Draws the alternative blue loading icon
+  	 * Position of the loading icon can be set by adding this to vino_config.txt:
+           PreLoadIconLeft:797
+           PreLoadIconTop:424
+           PreLoadIconWidth:90
+           PreLoadIconHeight:90
+           PreLoadIconWaitingFrame:1
+	 * @param flag - (true/false)
 	 */
-	lyt_setIsEnableClientLoadingIcon: (unk: boolean) => void;
+	lyt_setIsEnableClientLoadingIcon: (flag: boolean) => void;
 
 	/**
 	 * Unknown
@@ -376,9 +382,9 @@ export default interface VinoAPI {
 
 	/**
 	 * Unknown
-	 * @param unk - Unknown
+	 * @param bool - (true/false)
 	 */
-	loading_setIconVisibility: (unk: boolean) => void;
+	loading_setIconVisibility: (bool: boolean) => void;
 
 	/**
 	 * Show or hide the loading icon
@@ -398,50 +404,50 @@ export default interface VinoAPI {
 	/**
 	 * Opens the browser to the given URL
 	 * @param url - URL to jump to
-	 * @param unk - Unknown
+	 * @param flag - (true/false)
 	 */
-	jumpToBrowser: (url: string, unk: boolean) => void;
+	jumpToBrowser: (url: string, flag: boolean) => void;
 
 	/**
 	 * Opens the eShop
-	 * @param unk1 - Unknown. Title ID?
-	 * @param unk2 - Unknown
+	 * @param titleId - Title ID
+	 * @param flag - (true/false)
 	 */
-	jumpToEShop: (unk1: string, unk2: boolean) => void;
+	jumpToEShop: (titleId: string, flag: boolean) => void;
 
 	/**
 	 * Opens Miiverse
-	 * @param unk - Unknown
+	 * @param flag - (true/false)
 	 */
-	jumpToMiiverse: (unk: boolean) => void;
+	jumpToMiiverse: (flag: boolean) => void;
 
 	/**
 	 * Opens Miiverse to a specific post
 	 * @param postID - Post ID
-	 * @param unk - Unknown
+	 * @param flag - (true/false)
 	 */
-	jumpToMiiversePostId: (postID: string, unk: boolean) => void;
+	jumpToMiiversePostId: (postID: string, flag: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
+	 * Jumps to a streaming app (Netflix, Hulu or Amazon) with an URL param
+	 * @param url - Streaming program ID?
+	 * @param titleID - Title ID of the streaming app
+	 * @param flag - (true/false)
 	 */
-	jumpToVod: (unk1: string, unk2: string, unk3: boolean) => void;
+	jumpToVod: (url: string, titleID: string, flag: boolean) => void;
 
 	/**
 	 * Open an installed title
 	 * @param titleID - Titles title ID (hex)
-	 * @param unk - Unknown
+	 * @param flag - (true/false)
 	 */
-	jumpToTitle: (titleID: string, unk: boolean) => void;
+	jumpToTitle: (titleID: string, flag: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Jumps the user to the TV Remote Settings section on System Settings
+	 * @param flag - (true/false)
 	 */
-	jumpToSettingsTvRemote: (unk: boolean) => void;
+	jumpToSettingsTvRemote: (flag: boolean) => void;
 
 	/**
 	 * Closes the app gracefully
@@ -449,7 +455,7 @@ export default interface VinoAPI {
 	exit: () => void;
 
 	/**
-	 * Force closes the app
+	 * Force closes the app returning to the HOME Menu
 	 */
 	exitForce: () => void;
 
@@ -490,7 +496,7 @@ export default interface VinoAPI {
 	runOliveErrorDialog: (errorCode: number) => boolean;
 
 	/**
-	 * Enable TVii for the TV?
+	 * Plays an video on the TV screen (adding onclick with this function with a <video> tag)
 	 * @param flag - Enable/disable
 	 * @returns Unknown
 	 */
@@ -710,7 +716,7 @@ export default interface VinoAPI {
 	olv_postImageFixedPhrase: (painting: string, topicTag: string, communityID: number, spoiler: boolean, searchKey1: string, searchKey2: string, searchKey3: string, searchKey4: string, searchKey5: string) => boolean;
 
 	/**
-	 * Unknown
+	 * Returns if the post was sent with success?
 	 * @returns Unknown
 	 */
 	olv_getPostingResult: () => number;
@@ -740,7 +746,7 @@ export default interface VinoAPI {
 	olv_getUserAgent: () => string;
 
 	/**
-	 * Unknown
+	 * Plays an Miiverse sound effect??
 	 * @param unk1 - Unknown
 	 * @param unk2 - Unknown
 	 * @returns Unknown
@@ -762,12 +768,12 @@ export default interface VinoAPI {
 	act_getMiiImage: (slot: number) => string;
 
 	/**
-	 * Gets the NNID Mii image for the slot
+	 * Gets the NNID Mii image with a expression for the slot
 	 * @param slot - User account slot. See vino.act_getCurrentSlotNo()
-	 * @param unk2 - Unknown
+	 * @param feeling_id - Feeling ID (2 = HAPPY, 3 = LIKE, etc;)
 	 * @returns Base64 encoded PNG
 	 */
-	act_getMiiImageEx: (slot: number, unk2: number) => string;
+	act_getMiiImageEx: (slot: number, feeling_id: number) => string;
 
 	/**
 	 * Gets the NNID PID for the slot
@@ -834,7 +840,7 @@ export default interface VinoAPI {
 	kbd_isAppearing: () => boolean;
 
 	/**
-	 * Unknown
+	 * Intended for suggesting programs to the user? (Japanese TVii did use something like this)
 	 * @returns Unknown
 	 */
 	suggest_isOpening: () => boolean;
@@ -866,7 +872,7 @@ export default interface VinoAPI {
 	suggest_reset: () => void;
 
 	/**
-	 * Unknown
+	 * Enables Auto power down??
 	 */
 	apd_enable: () => void;
 
@@ -960,7 +966,7 @@ export default interface VinoAPI {
 	act_convertMiiName: (unk: string) => string;
 
 	/**
-	 * Unknown
+	 * Intended to know if could upload user info with BOSS?
 	 * @returns Unknown
 	 */
 	user_isAllowedToUploadInfo: () => boolean;
