@@ -444,7 +444,7 @@ export default interface VinoAPI {
 	jumpToTitle: (titleID: string, flag: boolean) => void;
 
 	/**
-	 * Jumps the user to the TV Remote Settings section on System Settings
+	 * Jumps the user to the TV Remote Settings section in System Settings
 	 * @param flag - (true/false)
 	 */
 	jumpToSettingsTvRemote: (flag: boolean) => void;
