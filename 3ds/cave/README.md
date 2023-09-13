@@ -1,8 +1,8 @@
 # Cave
-The JavaScript API used in the Miiverse applet on the Nintendo 3DS/2DS family of consoles
+The JavaScript API used in the browser applets on the Nintendo 3DS/2DS family of consoles. Confirmed to be used by both Miiverse and the NNID Settings app
 
 ## What is this?
-Cave is the API used by the 3DS Miiverse applet to interact with the system and user account. These types provide intellisense and type safety
+Cave is the API used by 3DS applets to interact with the system and user account. These types provide intellisense and type safety
 
 ### _**DISCLAIMER:**_ **WIP. MANY FUNCTIONS HAVE UNKNOWN USES AND PARAMETERS, AND SOME HAVE KNOWN SIGNATURES/TYPES**
 

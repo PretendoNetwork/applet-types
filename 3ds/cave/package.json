@@ -1,7 +1,7 @@
 {
   "name": "@pretendonetwork/cave-types",
-  "version": "1.0.1",
-  "description": "Type declarations for the cave API used in the 3DS Miiverse applet",
+  "version": "1.0.2",
+  "description": "Type declarations for the cave API used in 3DS applets",
   "main": "cave.js",
   "scripts": {
     "clean": "npx rimraf --glob '*.{js,map}'",

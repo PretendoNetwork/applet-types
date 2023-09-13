@@ -168,13 +168,13 @@ export default interface CaveAPI {
 	toolbar_setWideButtonMessage: (message: string) => void;
 
 	/**
-	 * Unknown
-	 * @param callback1 - Unknown. ACTIVITY button callback?
-	 * @param callback2 - Unknown. COMMUNITIES button callback?
-	 * @param callback3 - Unknown. NOTIFICATIONS button callback?
-	 * @param callback4 - Unknown. MY_MENU button callback?
+	 * Sets callbacks for the toolbar buttons
+	 * @param myMenuCallback - Callback for the MY_MENU button
+	 * @param activityCallback - Callback for the ACTIVITY button
+	 * @param communityCallback - Callback for the COMMUNITIES button
+	 * @param notificationCallback - Callback for the NOTIFICATIONS button
 	 */
-	toolbar_setToolbarCallback: (callback1: AppletCallback, callback2: AppletCallback, callback3: AppletCallback, callback4: AppletCallback) => void;
+	toolbar_setToolbarCallback: (myMenuCallback: AppletCallback, activityCallback: AppletCallback, communityCallback: AppletCallback, notificationCallback: AppletCallback) => void;
 
 	/**
 	 * Unknown
@@ -221,8 +221,8 @@ export default interface CaveAPI {
 	memo_getImageRawTga: () => string;
 
 	/**
-	 * Unknown
-	 * @param image - New image in BMP format?
+	 * Fills the drawing UI with the image
+	 * @param image - Base64 encoded BMP
 	 */
 	memo_setImageBmp: (image: string) => void;
 
@@ -263,28 +263,28 @@ export default interface CaveAPI {
 	error_callFreeErrorViewer: (errorCode: number, errorMessage: string) => void;
 
 	/**
-	 * @param errorCode - Numerical error code?
-	 * @returns The system error message for the given error code?
+	 * @param errorCode - Numerical error code
+	 * @returns The system error message for the given error code
 	 */
-	error_getMessage: (errorCode: number) => string; // TODO - errorCode is an assumption
+	error_getMessage: (errorCode: number) => string;
 
 	/**
-	 * Unknown
+	 * Lock input and enter loading state (with white fade effect)
 	 */
 	transition_begin: () => void;
 
 	/**
-	 * Unknown
+	 * Release input lock (with white fade effect)
 	 */
 	transition_end: () => void;
 
 	/**
-	 * Unknown
+	 * Lock input to loading state (no effect)
 	 */
 	transition_beginWithoutEffect: () => void;
 
 	/**
-	 * Unknown
+	 * Release input lock (no effect)
 	 */
 	transition_endWithoutEffect: () => void;
 
@@ -416,23 +416,23 @@ export default interface CaveAPI {
 	dialog_twoButton: (title: string, message: string, leftButtonText: string, rightButtonText: string) => number;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
+	 * Shows a left-aligned dialog using the provided title, message, and single button text
+	 * @param title - Dialog title text
+	 * @param message - Dialog message text
+	 * @param buttonText - Dialog button text
 	 * @returns Unknown
 	 */
-	dialog_oneButtonAlignL: (unk1: string, unk2: string, unk3: string) => number;
+	dialog_oneButtonAlignL: (title: string, message: string, buttonText: string) => number;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
+	 * Shows a left-aligned dialog with 2 buttons using the provided title, message, and button texts
+	 * @param title - Dialog title text
+	 * @param message - Dialog message text
+	 * @param leftButtonText - Dialog left button text
+	 * @param rightButtonText - Dialog right button text
 	 * @returns Unknown. Which button was pressed?
 	 */
-	dialog_twoButtonAlignL: (unk1: string, unk2: string, unk3: string, unk4: string) => number;
+	dialog_twoButtonAlignL: (title: string, message: string, leftButtonText: string, rightButtonText: string) => number;
 
 	/**
 	 * Unknown
@@ -441,14 +441,14 @@ export default interface CaveAPI {
 	dialog_hint: (unk: string) => void;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
+	 * Starts a wait dialog
+	 * @param title - Dialog title
+	 * @param message - Dialog message
 	 */
-	dialog_beginWait: (unk1: string, unk2: string) => void;
+	dialog_beginWait: (title: string, message: string) => void;
 
 	/**
-	 * Unknown
+	 * Close wait dialog
 	 */
 	dialog_endWait: () => void;
 
@@ -465,7 +465,8 @@ export default interface CaveAPI {
 	mii_getName: () => string;
 
 	/**
-	 * Unknown
+	 * Check if your Mii is registered
+	 * @returns True if registered
 	 */
 	mii_isRegistered: () => boolean;
 
@@ -506,153 +507,153 @@ export default interface CaveAPI {
 	swkbd_callFullKeyboard: (text: string, maxLength: number, minLength: number, isMonospace: boolean, isMultiline: boolean, isConvertible: boolean) => string;
 
 	/**
-	 * Shows a full keyboard with a guide?
+	 * Shows a full keyboard with a guide
 	 * @param text - Default text in the keyboard
 	 * @param maxLength - Max length for the input
 	 * @param minLength - Min length for the input
 	 * @param isMonospace - True to mono-space the characters
 	 * @param isMultiline - True if input can be multi line
 	 * @param isConvertible - Unknown
-	 * @param guide - Unknown
+	 * @param guide - Guide text for what to enter on the keyboard
 	 * @returns The keyboard input
 	 */
 	swkbd_callFullKeyboardWithGuide: (text: string, maxLength: number, minLength: number, isMonospace: boolean, isMultiline: boolean, isConvertible: boolean, guide: string) => string;
 
 	/**
 	 * Shows a 0-9 number keyboard
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param unk5 - Unknown
-	 * @param unk6 - Unknown
+	 * @param number - Default number
+	 * @param maxLength - Max number of digits
+	 * @param minLength - Min number of digits
+	 * @param maxNumber - Max number
+	 * @param minNumber - Min number
+	 * @param isMonospace - True to mono-space the characters
 	 * @returns The keyboard input
 	 */
-	swkbd_callNumberKeyboard: (unk1: number, unk2: number, unk3: number, unk4: number, unk5: number, unk6: boolean) => number;
+	swkbd_callNumberKeyboard: (number: number, maxLength: number, minLength: number, maxNumber: number, minNumber: number, isMonospace: boolean) => number;
 
 	/**
-	 * Shows a 0-9 number keyboard with a guide?
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param unk5 - Unknown
-	 * @param unk6 - Unknown
-	 * @param guide - Unknown
+	 * Shows a 0-9 number keyboard with a guide
+	 * @param number - Default number
+	 * @param maxLength - Max number of digits
+	 * @param minLength - Min number of digits
+	 * @param maxNumber - Max number
+	 * @param minNumber - Min number
+	 * @param isMonospace - True to mono-space the characters
+	 * @param guide - Guide text for what to enter on the keyboard
 	 * @returns The keyboard input
 	 */
-	swkbd_callNumberKeyboardWithGuide: (unk1: number, unk2: number, unk3: number, unk4: number, unk5: number, unk6: boolean, guide: string) => number;
+	swkbd_callNumberKeyboardWithGuide: (number: number, maxLength: number, minLength: number, maxNumber: number, minNumber: number, isMonospace: boolean, guide: string) => number;
 
 	/**
 	 * Shows a keyboard with only alphanumeric characters
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param unk5 - Unknown
+	 * @param text - Default text in the keyboard
+	 * @param maxLength - Max length for the input
+	 * @param minLength - Min length for the input
+	 * @param isMonospace - True to mono-space the characters
+	 * @param isMultiline - True if input can be multi line
 	 * @returns The keyboard input
 	 */
-	swkbd_callAlphanumericKeyboard: (unk1: string, unk2: number, unk3: number, unk4: boolean, unk5: boolean) => string;
+	swkbd_callAlphanumericKeyboard: (text: string, maxLength: number, minLength: number, isMonospace: boolean, isMultiline: boolean) => string;
 
 	/**
-	 * Shows a keyboard with only alphanumeric characters with a guide?
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param unk5 - Unknown
-	 * @param guide - Unknown
+	 * Shows a keyboard with only alphanumeric characters with a guide
+	 * @param text - Default text in the keyboard
+	 * @param maxLength - Max length for the input
+	 * @param minLength - Min length for the input
+	 * @param isMonospace - True to mono-space the characters
+	 * @param isMultiline - True if input can be multi line
+	 * @param guide - Guide text for what to enter on the keyboard
 	 * @returns The keyboard input
 	 */
-	swkbd_callAlphanumericKeyboardWithGuide: (unk1: string, unk2: number, unk3: number, unk4: boolean, unk5: boolean, guide: string) => string;
+	swkbd_callAlphanumericKeyboardWithGuide: (text: string, maxLength: number, minLength: number, isMonospace: boolean, isMultiline: boolean, guide: string) => string;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
+	 * Shows a keyboard dedicated for entering usernames
+	 * @param text - Default text in the keyboard
+	 * @param maxLength - Max length for the input
+	 * @param minLength - Min length for the input
+	 * @param isMonospace - True to mono-space the characters
 	 * @returns The keyboard input
 	 */
-	swkbd_callAccountIdKeyboard: (unk1: string, unk2: number, unk3: number, unk4: boolean) => string;
+	swkbd_callAccountIdKeyboard: (text: string, maxLength: number, minLength: number, isMonospace: boolean) => string;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param guide - Unknown
+	 * Shows a keyboard dedicated for entering usernames with a guide
+	 * @param text - Default text in the keyboard
+	 * @param maxLength - Max length for the input
+	 * @param minLength - Min length for the input
+	 * @param isMonospace - True to mono-space the characters
+	 * @param guide - Guide text for what to enter on the keyboard
 	 * @returns The keyboard input
 	 */
-	swkbd_callAccountIdKeyboardWithGuide: (unk1: string, unk2: number, unk3: number, unk4: boolean, guide: string) => string;
+	swkbd_callAccountIdKeyboardWithGuide: (text: string, maxLength: number, minLength: number, isMonospace: boolean, guide: string) => string;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
+	 * Shows a keyboard dedicated for entering alphanumeric passwords
+	 * @param text - Default text in the keyboard
+	 * @param maxLength - Max length for the input
+	 * @param minLength - Min length for the input
+	 * @param isMonospace - True to mono-space the characters
 	 * @returns The keyboard input
 	 */
-	swkbd_callPasswordKeyboard: (unk1: string, unk2: number, unk3: number, unk4: boolean) => string;
+	swkbd_callPasswordKeyboard: (text: string, maxLength: number, minLength: number, isMonospace: boolean) => string;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param guide - Unknown
+	 * Shows a keyboard dedicated for entering alphanumeric passwords with a guide
+	 * @param text - Default text in the keyboard
+	 * @param maxLength - Max length for the input
+	 * @param minLength - Min length for the input
+	 * @param isMonospace - True to mono-space the characters
+	 * @param guide - Guide text for what to enter on the keyboard
 	 * @returns The keyboard input
 	 */
-	swkbd_callPasswordKeyboardWithGuide: (unk1: string, unk2: number, unk3: number, unk4: boolean, guide: string) => string;
+	swkbd_callPasswordKeyboardWithGuide: (text: string, maxLength: number, minLength: number, isMonospace: boolean, guide: string) => string;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
+	 * Shows a keyboard dedicated for entering emails
+	 * @param text - Default text in the keyboard
+	 * @param maxLength - Max length for the input
+	 * @param minLength - Min length for the input
+	 * @param isMonospace - True to mono-space the characters
 	 * @returns The keyboard input
 	 */
-	swkbd_callEmailKeyboard: (unk1: string, unk2: number, unk3: number, unk4: boolean) => string;
+	swkbd_callEmailKeyboard: (text: string, maxLength: number, minLength: number, isMonospace: boolean) => string;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param guide - Unknown
+	 * Shows a keyboard dedicated for entering emails with a guide
+	 * @param text - Default text in the keyboard
+	 * @param maxLength - Max length for the input
+	 * @param minLength - Min length for the input
+	 * @param isMonospace - True to mono-space the characters
+	 * @param guide - Guide text for what to enter on the keyboard
 	 * @returns The keyboard input
 	 */
-	swkbd_callEmailKeyboardWithGuide: (unk1: string, unk2: number, unk3: number, unk4: boolean, guide: string) => string;
+	swkbd_callEmailKeyboardWithGuide: (text: string, maxLength: number, minLength: number, isMonospace: boolean, guide: string) => string;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param unk5 - Unknown
-	 * @param unk6 - Unknown
+	 * Shows a keyboard dedicated for entering numeric passwords
+	 * @param number - Default number
+	 * @param maxLength - Max number of digits
+	 * @param minLength - Min number of digits
+	 * @param maxNumber - Max number
+	 * @param minNumber - Min number
+	 * @param isMonospace - True to mono-space the characters
 	 * @returns The keyboard input
 	 */
-	swkbd_callPassnumberKeyboard: (unk1: number, unk2: number, unk3: number, unk4: number, unk5: number, unk6: boolean) => number;
+	swkbd_callPassnumberKeyboard: (number: number, maxLength: number, minLength: number, maxNumber: number, minNumber: number, isMonospace: boolean) => number;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param unk5 - Unknown
-	 * @param unk6 - Unknown
-	 * @param guide - Unknown
+	 * Shows a keyboard dedicated for entering numeric passwords with a guide
+	 * @param number - Default number
+	 * @param maxLength - Max number of digits
+	 * @param minLength - Min number of digits
+	 * @param maxNumber - Max number
+	 * @param minNumber - Min number
+	 * @param isMonospace - True to mono-space the characters
+	 * @param guide - Guide text for what to enter on the keyboard
 	 * @returns The keyboard input
 	 */
-	swkbd_callPassnumberKeyboardWithGuide: (unk1: number, unk2: number, unk3: number, unk4: number, unk5: number, unk6: boolean, guide: string) => number;
+	swkbd_callPassnumberKeyboardWithGuide: (number: number, maxLength: number, minLength: number, maxNumber: number, minNumber: number, isMonospace: boolean, guide: string) => number;
 
 	/**
 	 * Unknown
@@ -772,9 +773,9 @@ export default interface CaveAPI {
 	viewer_resetOnCloseCallback: () => void;
 
 	/**
-	 * Scrolls the browser immediately to the given position? X/Y?
-	 * @param x - Scroll X position?
-	 * @param y - Scroll Y position?
+	 * Scrolls the browser immediately to the given position without animation
+	 * @param x - Scroll X position
+	 * @param y - Scroll Y position
 	 */
 	brw_scrollImmediately: (x: number, y: number) => void;
 
@@ -789,17 +790,17 @@ export default interface CaveAPI {
 	brw_getScrollTopY: () => number;
 
 	/**
-	 * @returns True if the browser is online?
+	 * @returns True if the browser is online
 	 */
 	brw_isOnline: () => boolean;
 
 	/**
-	 * Unknown
+	 * Notify the client that the page has started moving
 	 */
 	brw_notifyPageMoving: () => void;
 
 	/**
-	 * Unknown
+	 * Notify the client that the page has started moving, with a white effect
 	 */
 	brw_notifyPageMovingEx: () => void;
 
@@ -820,8 +821,8 @@ export default interface CaveAPI {
 	cfg_getCountryName: () => string;
 
 	/**
-	 * Gets the current country ID? Is this system or NNID?
-	 * @returns Current country ID?
+	 * Gets the current country ID. Is this system or NNID?
+	 * @returns Current country ID
 	 */
 	cfg_getCountry: () => number;
 
@@ -1123,7 +1124,7 @@ export default interface CaveAPI {
 	jump_getYoutubeVersion: () => number;
 
 	/**
-	 * Unknown
+	 * Start garbage collector
 	 */
 	requestGc: () => void;
 
@@ -1147,14 +1148,14 @@ export default interface CaveAPI {
 	home_setEnabled: (flag: boolean) => boolean;
 
 	/**
-	 * Unknown
-	 * @returns Unknown
+	 * Checks if the currently running application is ACT (NNID Settings?)
+	 * @returns True if the currently running application is ACT (NNID Settings?)
 	 */
 	isAct: () => boolean;
 
 	/**
-	 * Unknown
-	 * @returns Unknown
+	 * Checks if the currently running application is Miiverse
+	 * @returns True if the currently running application is Miiverse
 	 */
 	isOlv: () => boolean;
 
@@ -1194,10 +1195,10 @@ export default interface CaveAPI {
 	convertTimeToSeconds: (time: string) => number;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown. Disable/enable a "scroll guide"? Real Miiverse used 0 in a `hide()` function, and 1 in a `show()` function
+	 * Display an animation that prompts touch scrolling
+	 * @param flag - Disable/enable a "scroll guide". Real Miiverse used 0 in a `hide()` function, and 1 in a `show()` function. Shim found in 0004001B-00018002 also documents 2
 	 */
-	effect_scrollGuide: (unk: number) => void;
+	effect_scrollGuide: (flag: number) => void;
 
 	/**
 	 * Unknown. Same effect as effect_scrollGuide but offset in the Y direction?
@@ -1207,20 +1208,29 @@ export default interface CaveAPI {
 	effect_setScrollGuideOffsetPos: (unk: number, offset: number) => void;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
+	 * Setting the native side key assignment behavior ON/OFF? (Translated from ネイティブ側のキーアサインの挙動をON/OFF設定する)
+	 * @param key - The key to enable/disable
+	 * @param flag - Enable/disable
 	 */
-	key_enableKeyAssignedFunc: (unk1: number, unk2: boolean) => void;
+	key_enableKeyAssignedFunc: (key: number, flag: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param callback - Unknown callback
+	 * Sets the callback for when a `<select>` box is closed
+	 * @param callback - Callback
+	 * @remarks
+	 *
+	 * This callback is called AFTER the `onchange` event. It fires for ALL
+	 * `<select>` boxes, but does not give any information as to which
+	 * was used. It fires even if the selection has NOT changed, unlike
+	 * the `onchange` event
+	 *
+	 * - The `success` parameter is -1 if cancelled
+	 * - The `index` parameter is the index of the selected item
 	 */
-	select_setClosingCallback: (callback: AppletCallback) => void;
+	select_setClosingCallback: (callback: (success: number, index: number) => void) => void;
 
 	/**
-	 * Unknown. Resets the callback set in select_setClosingCallback?
+	 * Resets the callback set in select_setClosingCallback
 	 */
 	select_resetClosingCallback: () => void;
 }
