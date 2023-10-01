@@ -15,6 +15,23 @@ export const enum Buttons {
 
 export type Button = Enumerize<Buttons>;
 
+// * From https://www.3dbrew.org/wiki/HID_Registers#HID_PAD
+export const enum HoldingKeys {
+	NONE = 0,
+	A = 1 << 0,
+	B = 1 << 1,
+	SELECT = 1 << 2,
+	START = 1 << 3,
+	RIGHT = 1 << 4,
+	LEFT = 1 << 5,
+	UP = 1 << 6,
+	DOWN = 1 << 7,
+	R = 1 << 8,
+	L = 1 << 9,
+	X = 1 << 10,
+	Y = 1 << 11
+};
+
 // TODO - Name these fields better?
 export const enum SoundEffects {
 	OLV_CANCEL = 'OLV_CANCEL',
@@ -73,7 +90,28 @@ export const enum SoundEffects {
 	SEL_START = 'CTR_SPIDER_SEL_START',
 	SEL_CURSOR = 'CTR_SPIDER_SEL_CURSOR',
 	InfoOn = 'CTR_SPIDER_InfoOn',
-	SEL_END = 'CTR_SPIDER_SEL_END'
+	SEL_END = 'CTR_SPIDER_SEL_END',
+
+	// * ACT (NNID Settings) sound effects
+	// *
+	// * ACT also implements all of the above sound effects, BUT starting with `SE_`
+	// * Since Nintendo only used the ACT-specific sound effects on the ACT webpage,
+	// * we'll just implement those
+	ACT_HELP = 'SE_ACT_HELP',
+	ACT_HELP_OPEN = 'SE_ACT_HELP_OPEN',
+	ACT_BUTTON = 'SE_ACT_BUTTON',
+	ACT_DROPDOWN = 'SE_ACT_DROPDOWN',
+	ACT_RADIO = 'SE_ACT_RADIO',
+	ACT_SLIDE_L = 'SE_ACT_SLIDE_L',
+	ACT_SLIDE_R = 'SE_ACT_SLIDE_R',
+	ACT_TEXT = 'SE_ACT_TEXT',
+	ACT_END = 'SE_ACT_END',
+	ACT_OK_SUB = 'SE_ACT_OK_SUB',
+	ACT_CANCEL_SUB = 'SE_ACT_CANCEL_SUB',
+	ACT_OK = 'SE_ACT_OK',
+	ACT_CANCEL = 'SE_ACT_CANCEL',
+	ACT_LINK = 'SE_ACT_LINK',
+	ACT_CAUTION = 'SE_ACT_CAUTION'
 };
 
 export type SoundEffect = `${SoundEffects}`;
@@ -89,7 +127,17 @@ export const enum BackgroundMusic {
 	MAIN_OFFLINE = 'BGM_CAVE_MAIN_OFFLINE',
 	SETTING = 'BGM_CAVE_SETTING',
 	SYOKAI = 'BGM_CAVE_SYOKAI',
-	SYOKAI2 = 'BGM_CAVE_SYOKAI2'
+	SYOKAI2 = 'BGM_CAVE_SYOKAI2',
+
+	// * ACT (NNID Settings) background music
+	ACT_1 = 'ACT_1',
+	ACT_2 = 'ACT_2',
+	ACT_3 = 'ACT_3',
+	ACT_4 = 'ACT_4',
+	ACT_5 = 'ACT_5',
+	ACT_6 = 'ACT_6',
+	ACT_7 = 'ACT_7',
+	ACT_8 = 'ACT_8'
 };
 
 export type BGM = `${BackgroundMusic}`;
@@ -113,6 +161,52 @@ export const enum MiiFeelings {
 };
 
 export type MiiFeeling = Enumerize<MiiFeelings>;
+
+export const enum DialogResults {
+	UNEXPECTED = -1,
+	LEFT = 0,
+	RIGHT = 1,
+	CANCEL = 0,
+	OK = 1
+};
+
+export type DialogResult = Enumerize<DialogResults>;
+
+export const enum NotifyTypes {
+	NORMAL = 0,
+	ERROR = 1,
+	CONFIRM = 2
+};
+
+export type NotifyType = Enumerize<NotifyTypes>;
+
+export const enum CallerTypes {
+	/** Unknown app or system applet other than Miiverse */
+	UNKNOWN = 0,
+
+	/** Jumped from normal app */
+	APP = 1,
+
+	/** Jumped from System Settings */
+	SETTINGS = 2,
+
+	/** Returned from Parental Controls settings */
+	PARENTAL_CONTROL = 3,
+
+	/** Returned from COPPACS settings */
+	COPPACS = 4,
+
+	/** Returned from Mii Maker */
+	MII_MAKER = 5,
+
+	/** Jumped from Miiverse */
+	MIIVERSE = 6,
+
+	/** Jumped from Nintendo eShop */
+	ESHOP = 7
+};
+
+export type CallerType = Enumerize<CallerTypes>;
 
 // * Applets have a dedicated "callback" type for their custom JS APIs
 export type AppletCallback = () => void; // TODO - Check if this signature is correct
@@ -419,9 +513,9 @@ export default interface CaveAPI {
 	 * @param message - Dialog message text
 	 * @param leftButtonText - Dialog left button text
 	 * @param rightButtonText - Dialog right button text
-	 * @returns Unknown. Which button was pressed?
+	 * @returns Which button was pressed
 	 */
-	dialog_twoButton: (title: string, message: string, leftButtonText: string, rightButtonText: string) => number;
+	dialog_twoButton: (title: string, message: string, leftButtonText: string, rightButtonText: string) => DialogResult;
 
 	/**
 	 * Shows a left-aligned dialog using the provided title, message, and single button text
@@ -438,9 +532,9 @@ export default interface CaveAPI {
 	 * @param message - Dialog message text
 	 * @param leftButtonText - Dialog left button text
 	 * @param rightButtonText - Dialog right button text
-	 * @returns Unknown. Which button was pressed?
+	 * @returns Which button was pressed
 	 */
-	dialog_twoButtonAlignL: (title: string, message: string, leftButtonText: string, rightButtonText: string) => number;
+	dialog_twoButtonAlignL: (title: string, message: string, leftButtonText: string, rightButtonText: string) => DialogResult;
 
 	/**
 	 * Unknown
@@ -466,9 +560,9 @@ export default interface CaveAPI {
 	 * @param message - Dialog message text
 	 * @param leftButtonText - Dialog left button text
 	 * @param rightButtonText - Dialog right button text
-	 * @returns Unknown. Which button was pressed?
+	 * @returns Which button was pressed
 	 */
-	dialog_twoButtonBL: (title: string, message: string, leftButtonText: string, rightButtonText: string) => number;
+	dialog_twoButtonBL: (title: string, message: string, leftButtonText: string, rightButtonText: string) => DialogResult;
 
 	/**
 	 * Shows a dialog with action buttons where the OK button is delayed.
@@ -476,9 +570,9 @@ export default interface CaveAPI {
 	 * @param message - Dialog message text
 	 * @param buttonOK - Dialog OK button text
 	 * @param buttonCancel - Dialog Cancel button text
-	 * @returns Unknown. Which button was pressed?
+	 * @returns Which button was pressed
 	 */
-	dialog_deferedButton: (message: string, buttonOK: string, buttonCancel: string) => number;
+	dialog_deferedButton: (message: string, buttonOK: string, buttonCancel: string) => DialogResult;
 
 	/**
 	 * Shows a EULA dialog with 2 buttons using the provided title, message, and button texts
@@ -486,9 +580,9 @@ export default interface CaveAPI {
 	 * @param message - Dialog message text
 	 * @param leftButtonText - Dialog left button text
 	 * @param rightButtonText - Dialog right button text. Not shown if set to `null`
-	 * @returns Unknown. Which button was pressed?
+	 * @returns Which button was pressed
 	 */
-	dialog_eula: (title: string, message: string, leftButtonText: string, rightButtonText: string | null) => number;
+	dialog_eula: (title: string, message: string, leftButtonText: string, rightButtonText: string | null) => DialogResult;
 
 	/**
 	 * Shows a dialog using the provided title, message, and single button text.
@@ -497,7 +591,7 @@ export default interface CaveAPI {
 	 * @param message - Dialog message text
 	 * @param buttonText - Dialog button text
 	 * @param holdingKeys - The keys to check if they are pressed
-	 * @returns Unknown. If the keys are pressed?
+	 * @returns If the keys are pressed
 	 */
 	dialog_oneButtonWithCheckingHoldKey: (title: string, message: string, buttonText: string, holdingKeys: number) => number;
 
@@ -983,7 +1077,7 @@ export default interface CaveAPI {
 	 * @param message - Notification message text. Use `null` to hide the notification
 	 * @param type - Notification message type
 	 */
-	act_setNotifyMessage: (message: string | null, type: number) => void;
+	act_setNotifyMessage: (message: string | null, type: NotifyType) => void;
 
 	/**
 	 * Check if your Mii is registered in your account
@@ -1572,9 +1666,9 @@ export default interface CaveAPI {
 
 	/**
 	 * Gets the app that called the applet
-	 * @returns 1: Normal startup, 5: Mii Maker return?
+	 * @returns App caller type
 	 */
-	jump_getCaller: () => number;
+	jump_getCaller: () => CallerType;
 
 	/**
 	 * Jumps to Mii Maker
