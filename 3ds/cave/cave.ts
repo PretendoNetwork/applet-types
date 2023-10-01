@@ -15,6 +15,23 @@ export const enum Buttons {
 
 export type Button = Enumerize<Buttons>;
 
+// * From https://www.3dbrew.org/wiki/HID_Registers#HID_PAD
+export const enum HoldingKeys {
+	NONE = 0,
+	A = 1 << 0,
+	B = 1 << 1,
+	SELECT = 1 << 2,
+	START = 1 << 3,
+	RIGHT = 1 << 4,
+	LEFT = 1 << 5,
+	UP = 1 << 6,
+	DOWN = 1 << 7,
+	R = 1 << 8,
+	L = 1 << 9,
+	X = 1 << 10,
+	Y = 1 << 11
+};
+
 // TODO - Name these fields better?
 export const enum SoundEffects {
 	OLV_CANCEL = 'OLV_CANCEL',
@@ -73,7 +90,28 @@ export const enum SoundEffects {
 	SEL_START = 'CTR_SPIDER_SEL_START',
 	SEL_CURSOR = 'CTR_SPIDER_SEL_CURSOR',
 	InfoOn = 'CTR_SPIDER_InfoOn',
-	SEL_END = 'CTR_SPIDER_SEL_END'
+	SEL_END = 'CTR_SPIDER_SEL_END',
+
+	// * ACT (NNID Settings) sound effects
+	// *
+	// * ACT also implements all of the above sound effects, BUT starting with `SE_`
+	// * Since Nintendo only used the ACT-specific sound effects on the ACT webpage,
+	// * we'll just implement those
+	ACT_HELP = 'SE_ACT_HELP',
+	ACT_HELP_OPEN = 'SE_ACT_HELP_OPEN',
+	ACT_BUTTON = 'SE_ACT_BUTTON',
+	ACT_DROPDOWN = 'SE_ACT_DROPDOWN',
+	ACT_RADIO = 'SE_ACT_RADIO',
+	ACT_SLIDE_L = 'SE_ACT_SLIDE_L',
+	ACT_SLIDE_R = 'SE_ACT_SLIDE_R',
+	ACT_TEXT = 'SE_ACT_TEXT',
+	ACT_END = 'SE_ACT_END',
+	ACT_OK_SUB = 'SE_ACT_OK_SUB',
+	ACT_CANCEL_SUB = 'SE_ACT_CANCEL_SUB',
+	ACT_OK = 'SE_ACT_OK',
+	ACT_CANCEL = 'SE_ACT_CANCEL',
+	ACT_LINK = 'SE_ACT_LINK',
+	ACT_CAUTION = 'SE_ACT_CAUTION'
 };
 
 export type SoundEffect = `${SoundEffects}`;
@@ -89,7 +127,17 @@ export const enum BackgroundMusic {
 	MAIN_OFFLINE = 'BGM_CAVE_MAIN_OFFLINE',
 	SETTING = 'BGM_CAVE_SETTING',
 	SYOKAI = 'BGM_CAVE_SYOKAI',
-	SYOKAI2 = 'BGM_CAVE_SYOKAI2'
+	SYOKAI2 = 'BGM_CAVE_SYOKAI2',
+
+	// * ACT (NNID Settings) background music
+	ACT_1 = 'ACT_1',
+	ACT_2 = 'ACT_2',
+	ACT_3 = 'ACT_3',
+	ACT_4 = 'ACT_4',
+	ACT_5 = 'ACT_5',
+	ACT_6 = 'ACT_6',
+	ACT_7 = 'ACT_7',
+	ACT_8 = 'ACT_8'
 };
 
 export type BGM = `${BackgroundMusic}`;
@@ -113,6 +161,52 @@ export const enum MiiFeelings {
 };
 
 export type MiiFeeling = Enumerize<MiiFeelings>;
+
+export const enum DialogResults {
+	UNEXPECTED = -1,
+	LEFT = 0,
+	RIGHT = 1,
+	CANCEL = 0,
+	OK = 1
+};
+
+export type DialogResult = Enumerize<DialogResults>;
+
+export const enum NotifyTypes {
+	NORMAL = 0,
+	ERROR = 1,
+	CONFIRM = 2
+};
+
+export type NotifyType = Enumerize<NotifyTypes>;
+
+export const enum CallerTypes {
+	/** Unknown app or system applet other than Miiverse */
+	UNKNOWN = 0,
+
+	/** Jumped from normal app */
+	APP = 1,
+
+	/** Jumped from System Settings */
+	SETTINGS = 2,
+
+	/** Returned from Parental Controls settings */
+	PARENTAL_CONTROL = 3,
+
+	/** Returned from COPPACS settings */
+	COPPACS = 4,
+
+	/** Returned from Mii Maker */
+	MII_MAKER = 5,
+
+	/** Jumped from Miiverse */
+	MIIVERSE = 6,
+
+	/** Jumped from Nintendo eShop */
+	ESHOP = 7
+};
+
+export type CallerType = Enumerize<CallerTypes>;
 
 // * Applets have a dedicated "callback" type for their custom JS APIs
 export type AppletCallback = () => void; // TODO - Check if this signature is correct
@@ -251,6 +345,14 @@ export default interface CaveAPI {
 	 * cave.error_callErrorViewer(155927);
 	 */
 	error_callErrorViewer: (errorCode: number) => void;
+
+	/**
+	 * Display the provided error code and check if a combination of buttons is pressed
+	 * @param errorCode - Numerical error code
+	 * @param holdingKeys - The keys to check if they are pressed
+	 * @returns If the keys are pressed
+	 */
+	error_callErrorViewerWithCheckingHoldKey: (errorCode: number, holdingKeys: number) => number;
 
 	/**
 	 * Display the provided error code and message
@@ -411,9 +513,9 @@ export default interface CaveAPI {
 	 * @param message - Dialog message text
 	 * @param leftButtonText - Dialog left button text
 	 * @param rightButtonText - Dialog right button text
-	 * @returns Unknown. Which button was pressed?
+	 * @returns Which button was pressed
 	 */
-	dialog_twoButton: (title: string, message: string, leftButtonText: string, rightButtonText: string) => number;
+	dialog_twoButton: (title: string, message: string, leftButtonText: string, rightButtonText: string) => DialogResult;
 
 	/**
 	 * Shows a left-aligned dialog using the provided title, message, and single button text
@@ -430,9 +532,9 @@ export default interface CaveAPI {
 	 * @param message - Dialog message text
 	 * @param leftButtonText - Dialog left button text
 	 * @param rightButtonText - Dialog right button text
-	 * @returns Unknown. Which button was pressed?
+	 * @returns Which button was pressed
 	 */
-	dialog_twoButtonAlignL: (title: string, message: string, leftButtonText: string, rightButtonText: string) => number;
+	dialog_twoButtonAlignL: (title: string, message: string, leftButtonText: string, rightButtonText: string) => DialogResult;
 
 	/**
 	 * Unknown
@@ -453,6 +555,47 @@ export default interface CaveAPI {
 	dialog_endWait: () => void;
 
 	/**
+	 * Shows a black dialog with 2 buttons using the provided title, message, and button texts
+	 * @param title - Dialog title text
+	 * @param message - Dialog message text
+	 * @param leftButtonText - Dialog left button text
+	 * @param rightButtonText - Dialog right button text
+	 * @returns Which button was pressed
+	 */
+	dialog_twoButtonBL: (title: string, message: string, leftButtonText: string, rightButtonText: string) => DialogResult;
+
+	/**
+	 * Shows a dialog with action buttons where the OK button is delayed.
+	 *
+	 * @param message - Dialog message text
+	 * @param buttonOK - Dialog OK button text
+	 * @param buttonCancel - Dialog Cancel button text
+	 * @returns Which button was pressed
+	 */
+	dialog_deferedButton: (message: string, buttonOK: string, buttonCancel: string) => DialogResult;
+
+	/**
+	 * Shows a EULA dialog with 2 buttons using the provided title, message, and button texts
+	 * @param title - Dialog title text
+	 * @param message - Dialog message text
+	 * @param leftButtonText - Dialog left button text
+	 * @param rightButtonText - Dialog right button text. Not shown if set to `null`
+	 * @returns Which button was pressed
+	 */
+	dialog_eula: (title: string, message: string, leftButtonText: string, rightButtonText: string | null) => DialogResult;
+
+	/**
+	 * Shows a dialog using the provided title, message, and single button text.
+	 * Also checks if a combination of keys is pressed.
+	 * @param title - Dialog title text
+	 * @param message - Dialog message text
+	 * @param buttonText - Dialog button text
+	 * @param holdingKeys - The keys to check if they are pressed
+	 * @returns If the keys are pressed
+	 */
+	dialog_oneButtonWithCheckingHoldKey: (title: string, message: string, buttonText: string, holdingKeys: number) => number;
+
+	/**
 	 * @param feeling - Changes the expression the Mii render uses
 	 * @returns The users Mii render as base64 encoded
 	 */
@@ -469,6 +612,50 @@ export default interface CaveAPI {
 	 * @returns True if registered
 	 */
 	mii_isRegistered: () => boolean;
+
+	/**
+	 * Check if your Mii name has NG (not good) words
+	 * @returns True if it has NG words
+	 */
+	mii_hasNgName: () => boolean;
+
+	/**
+	 * Check if your Mii author has NG (not good) words
+	 * @returns True if it has NG words
+	 */
+	mii_hasNgAuthorName: () => boolean;
+
+	/**
+	 * Check if your Mii is public
+	 * @returns True if public
+	 */
+	mii_isPublic: () => boolean;
+
+	/**
+	 * Sets your Mii to public
+	 * @returns True if successfully set
+	 */
+	mii_setPublic: () => boolean;
+
+	/**
+	 * Updates your Mii to the Mii registered in your account
+	 * @returns True if successful
+	 * @remarks
+	 *
+	 * This function checks if a NNID is linked to the account
+	 *
+	 */
+	mii_updateToAccountMii: () => boolean;
+
+	/**
+	 * Performs only Mii synchronization processing
+	 * @returns True if successful
+	 * @remarks
+	 *
+	 * This function doesn't check if a NNID is linked to the account
+	 *
+	 */
+	mii_syncToAccountMii: () => boolean;
 
 	/**
 	 * Plays a sound effect
@@ -880,6 +1067,485 @@ export default interface CaveAPI {
 	olv_getNotificationUrl: () => string;
 
 	/**
+	 * Changes the text in the header section of the Account Settings app
+	 * @param headerMessage - Header message text
+	 */
+	act_setHeaderMessage: (headerMessage: string) => void;
+
+	/**
+	 * Displays a notification for your account?
+	 * @param message - Notification message text. Use `null` to hide the notification
+	 * @param type - Notification message type
+	 */
+	act_setNotifyMessage: (message: string | null, type: NotifyType) => void;
+
+	/**
+	 * Check if your Mii is registered in your account
+	 * @returns True if registered
+	 */
+	act_isMiiRegistered: () => boolean;
+
+	/**
+	 * Create an image of the Mii registered in your account
+	 * @remarks
+	 *
+	 * The Mii icon is stored temporarily in memory.
+	 * To get the icon, use `act_getMiiIconBase64`
+	 *
+	 */
+	act_makeMiiIcon: () => void;
+
+	/**
+	 * Gets the image of the Mii registered in your account
+	 * @returns Base64 encoded Mii image
+	 */
+	act_getMiiIconBase64: () => string;
+
+	/**
+	 * Gets the name of the Mii registered in your account
+	 * @returns Mii name of the account
+	 */
+	act_getMiiName: () => string;
+
+	/**
+	 * Updates the Mii data of your account
+	 * @returns JSON result
+	 */
+	act_updateMiiData: () => string;
+
+	/**
+	 * Obtain and reflect account information from the server
+	 * @returns JSON result
+	 */
+	act_syncAccountInfo: () => string;
+
+	/**
+	 * Gets the country code set for the account
+	 * @returns Alpha-2 country code
+	 */
+	act_getCountry: () => string;
+
+	/**
+	 * Gets the country name set for the account
+	 * @returns Country name
+	 */
+	act_getCountryName: () => string;
+
+	/**
+	 * Acquires the residential area set for the account
+	 * @returns Residential area / CountryInfo
+	 */
+	act_getSimpleAddressId: () => number;
+
+	/**
+	 * Gets a list of region display names
+	 * @returns JSON list of regions
+	 * @remarks
+	 *
+	 * Elements with region ID = 1 that correspond to "Do not set" will not be included in the list.
+	 * A set of display name and region ID is returned as a JSON format array
+	 *
+	 */
+	act_getRegionList: () => string;
+
+	/**
+	 * Gets the region ID set for the account
+	 * @returns Region ID
+	 * @remarks
+	 *
+	 * Returns 0 when the account doesn't have a NNID linked
+	 *
+	 */
+	act_getRegionId: () => number;
+
+	/**
+	 * Gets a list of time zones
+	 * @returns JSON list of time zones
+	 */
+	act_acquireTimeZoneList: () => string;
+
+	/**
+	 * Gets the time zone set for the account
+	 * @returns Time zone name
+	 */
+	act_getTimeZoneName: () => string;
+
+	/**
+	 * Gets the birthday set for the account
+	 * @returns Birthday in JSON format
+	 */
+	act_getBirthday: () => string;
+
+	/**
+	 * Determine if the given birthday can be registered
+	 * @param year - The birthday year
+	 * @param month - The birthday month
+	 * @param day - The birthday day
+	 * @returns JSON result
+	 */
+	act_checkBirthday: (year: number, month: number, day: number) => string;
+
+	/**
+	 * Gets the gender set for the account
+	 * @returns Gender
+	 */
+	act_getGender: () => number;
+
+	/**
+	 * Determine whether a NNID is linked to your account
+	 * @returns True if a NNID is linked
+	 */
+	act_isNetworkAccount: () => boolean;
+
+	/**
+	 * Gets the NNID set for the account
+	 * @returns NNID of the account
+	 */
+	act_getAccountId: () => string;
+
+	/**
+	 * Gets the associated NNID set for the account
+	 * @returns Associated NNID
+	 */
+	act_getAssignedAccountId: () => string;
+
+	/**
+	 * Replaces the associated NNID set for the account?
+	 * @returns JSON result
+	 */
+	act_replaceAccountId: () => string;
+
+	/**
+	 * Determine if a given NNID is available
+	 * @param accountID - NNID to check
+	 * @returns JSON result
+	 */
+	act_inquireAccountIdAvailability: (accountID: string) => string;
+
+	/**
+	 * Creates a new Nintendo Network account
+	 * @param accountID - NNID to register
+	 * @param password - Password for the account
+	 * @param mailAddress - Mail address for the account
+	 * @param timeZoneName - Time zone for the account
+	 * @param eulaLanguage - Convention language name
+	 * @param birthYear - Year of birth
+	 * @param birthMonth - Month of birth
+	 * @param birthDay - Day of birth
+	 * @param gender - Gender for the account
+	 * @param areaID - Region ID for the account
+	 * @param isEnabledReceivingAds - Allow receciving notification mails on your mail address
+	 * @param isEnabledOffDeviceAccess - Allow accessing your account from other devices
+	 * @returns JSON result
+	 */
+	act_bindToNewServerAccount: (
+		accountID: string,
+		password: string,
+		mailAddress: string,
+		timeZoneName: string,
+		eulaLanguage: string,
+		birthYear: number,
+		birthMonth: number,
+		birthDay: number,
+		gender: number,
+		areaID: number,
+		isEnabledReceivingAds: boolean,
+		isEnabledOffDeviceAccess: boolean
+	) => string;
+
+	/**
+	 * Determine if the given NNID can be linked with this account
+	 * @param accountID - NNID to check
+	 * @param password - Password of the account
+	 * @param mailAddress - Mail address of the account
+	 * @returns JSON result
+	 */
+	act_inquireBindingToExistentServerAccount: (accountID: string, password: string, mailAddress: string) => string;
+
+	/**
+	 * Links the given NNID with this account
+	 * @param accountID - NNID to check
+	 * @param password - Password of the account
+	 * @param mailAddress - Mail address of the account
+	 * @returns JSON result
+	 */
+	act_bindToExistentServerAccount: (accountID: string, password: string, mailAddress: string) => string;
+
+	/**
+	 * Unlinks the NNID of this account
+	 * @returns JSON result
+	 */
+	act_unbindServerAccount: () => string;
+
+	/**
+	 * Deletes the NNID and the current account. A new local account is created after deletion
+	 * @returns JSON result
+	 */
+	act_deleteAccount: () => string;
+
+	/**
+	 * Deletes the console account. A new local account is created after deletion
+	 * @returns JSON result
+	 */
+	act_deleteOnlyConsoleAccount: () => string;
+
+	/**
+	 * Acquires an account token
+	 * @param password - Password of the account
+	 * @returns JSON result
+	 */
+	act_acquireAccountTokenEx: (password: string) => string;
+
+	/**
+	 * Changes the password of the account
+	 * @param newPassword - New password for the account
+	 * @returns JSON result
+	 */
+	act_updateAccountPassword: (newPassword: string) => string;
+
+	/**
+	 * Determine if the password is correct
+	 * @param password - Password of the account
+	 * @returns JSON result
+	 */
+	act_isCorrectPassword: (password: string) => string;
+
+	/**
+	 * Updates the password input value held in memory
+	 * @param password - Password of the account
+	 * @returns JSON result
+	 */
+	act_setAccountPasswordInput: (password: string) => string;
+
+	/**
+	 * Determine if the password is cached
+	 * @returns True if cached
+	 */
+	act_isPasswordCacheEnabled: () => boolean;
+
+	/**
+	 * Toggle the account password caching
+	 * @param enabled - Whether to enable the account password caching
+	 */
+	act_enableAccountPasswordCache: (enabled: boolean) => void;
+
+	/**
+	 * Determine if the given password can be used for the account
+	 * @param password - Password for the account
+	 * @param accountID - NNID of the account
+	 * @returns JSON result
+	 */
+	act_checkAccountPassword: (password: string, accountID: string) => string;
+
+	/**
+	 * Send a new password to the mail address of the account
+	 * @returns JSON result
+	 */
+	act_reissueAccountPassword: () => string;
+
+	/**
+	 * Determine if the mail address has been verified
+	 * @returns True if verified
+	 */
+	act_isMailAddressValidated: () => boolean;
+
+	/**
+	 * Determine if the given mail address is valid
+	 * @param mailAddress - Mail address
+	 * @returns JSON result
+	 */
+	act_checkMailAddress: (mailAddress: string) => string;
+
+	/**
+	 * Determine if the given mail address uses a blocked domain?
+	 * @param mailAddress - Mail address
+	 * @returns JSON result
+	 */
+	act_inquireMailAddress: (mailAddress: string) => string;
+
+	/**
+	 * Verifies the mail address of the account
+	 * @param code - Validation code sent to the mail address
+	 * @returns JSON result
+	 */
+	act_validateMailAddress: (code: number) => string;
+
+	/**
+	 * Send a validation code to the mail address of the account
+	 * @returns JSON result
+	 */
+	act_sendConfirmationMail: () => string;
+
+	/**
+	 * Updates the mail address of the account
+	 * @param newMailAddress - New mail address
+	 * @returns JSON result
+	 */
+	act_updateAccountMailAddress: (newMailAddress: string) => string;
+
+	/**
+	 * Determine if receiving notification mails is enabled
+	 * @returns True if enabled
+	 */
+	act_isEnabledReceiveAds: () => boolean;
+
+	/**
+	 * Determine if using the account on different devices is enabled
+	 * @returns True if enabled
+	 */
+	act_isOffDeviceAccessEnabled: () => boolean;
+
+	/**
+	 * Updates account information
+	 * @param gender - Gender for the account
+	 * @param areaID - Region ID for the account
+	 * @param timeZoneName - Time zone for the account
+	 * @returns JSON result
+	 */
+	act_updateAccountInfoEx: (gender: number, areaID: number, timeZoneName: string) => string;
+
+	/**
+	 * Updates the receiving notification mails option
+	 * @param isEnabledToReceiveAds - Whether to enable receiving notification mails
+	 * @returns JSON result
+	 */
+	act_updateIsEnabledToReceiveAds: (isEnabledToReceiveAds: boolean) => string;
+
+	/**
+	 * Updates the account usage on different devices option
+	 * @param isOffDeviceAccessEnabled - Whether to enable usage of the account on different devices
+	 * @returns JSON result
+	 */
+	act_updateIsOffDeviceAccessEnabled: (isOffDeviceAccessEnabled: boolean) => string;
+
+	/**
+	 * Gets context data for support from Nintendo
+	 * @returns Context data as JSON
+	 */
+	act_getSupportContext: () => string;
+
+	/**
+	 * Determine if Parental Controls rectrictions are unlocked
+	 * @returns True if unlocked
+	 */
+	act_isPinValidated: () => boolean;
+
+	/**
+	 * Acquires EULA-related data
+	 * @returns JSON result
+	 */
+	act_acquireEulaList: () => string;
+
+	/**
+	 * Gets the list of languages that the EULA has
+	 * @returns JSON array of languages
+	 * @remarks
+	 *
+	 * `act_acquireEulaList` must be called first
+	 *
+	 */
+	act_getEulaLanguageList: () => string;
+
+	/**
+	 * Gets the EULA main text in the selected language
+	 * @param language - Language to use
+	 * @returns EULA main text
+	 */
+	act_getEulaMainText: (language: string) => string;
+
+	/**
+	 * Gets the EULA main title in the selected language
+	 * @param language - Language to use
+	 * @returns EULA main title
+	 */
+	act_getEulaMainTitle: (language: string) => string;
+
+	/**
+	 * Gets the sub-EULA main text in the selected language (privacy policy in European regions, etc.)
+	 * @param language - Language to use
+	 * @returns Sub-EULA main text
+	 */
+	act_getEulaSubText: (language: string) => string;
+
+	/**
+	 * Gets the sub-EULA main title in the selected language
+	 * @param language - Language to use
+	 * @returns Sub-EULA main title
+	 */
+	act_getEulaSubTitle: (language: string) => string;
+
+	/**
+	 * Gets the EULA version
+	 * @param language - Language to use
+	 * @returns EULA version
+	 */
+	act_getEulaVersion: (language: string) => number;
+
+	/**
+	 * Agrees to the EULA
+	 * @param language - Language to use
+	 * @returns JSON result
+	 */
+	act_agreeEula: (language: string) => string;
+
+	/**
+	 * Destroys EULA-related data in memory (Stubbed)
+	 * @returns JSON result
+	 */
+	act_dumpEulaList: () => void;
+
+	/**
+	 * Determine if Approval ID is retained (COPPA-related)
+	 * @returns True if retained
+	 */
+	act_hasApprovalId: () => boolean;
+
+	/**
+	 * Delete Approval ID
+	 */
+	act_clearApprovalId: () => void;
+
+	/**
+	 * Send a COPPA code to the mail address of the account
+	 * @returns JSON result
+	 */
+	act_sendCoppaCodeMail: () => string;
+
+	/**
+	 * Gets the mail address to send the COPPA code
+	 * @returns Mail address
+	 */
+	act_getCoppaMailAddress: () => string;
+
+	/**
+	 * Determine COPPA code is correct
+	 * @param code - COPPA code
+	 * @returns True if correct
+	 */
+	act_isCorrectCoppaCode: (code: string) => boolean;
+
+	/**
+	 * Approves COPPA by using a credit card
+	 * @param cardType - Card type
+	 * @param cardNumber - Card number
+	 * @param securityCode - Security code
+	 * @param expirationMonth - Month of expiration
+	 * @param expiraionYear - Year of expiration
+	 * @param postalCode - Postal code
+	 * @param mailAddress - Parent mail address
+	 * @returns JSON result
+	 */
+	act_approveByCreditCard: (
+		cardType: string,
+		cardNumber: string,
+		securityCode: string,
+		expirationMonth: number,
+		expiraionYear: number,
+		postalCode: string,
+		mailAddress: string
+	) => string;
+
+	/**
 	 * Unknown. Registers a BOSS task?
 	 * @returns True if was a success?
 	 */
@@ -979,6 +1645,77 @@ export default interface CaveAPI {
 	 * @returns The number of pages which can be returned to
 	 */
 	history_getBackCount: () => number;
+
+	/**
+	 * Check if returned from the jump to Mii Maker?
+	 * @returns True if returned?
+	 */
+	jump_isReturnedFromMiiEdit: () => boolean;
+
+	/**
+	 * Check if returned from System Settings?
+	 * @returns True if returned?
+	 */
+	jump_isFromSettings: () => boolean;
+
+	/**
+	 * Check if we are returning from MSET (System Settings)
+	 * @returns 1: Normal startup, 2: MSET return?
+	 */
+	jump_getCallerSettingsScene: () => number;
+
+	/**
+	 * Gets the app that called the applet
+	 * @returns App caller type
+	 */
+	jump_getCaller: () => CallerType;
+
+	/**
+	 * Jumps to Mii Maker
+	 * @param argument - Call argument
+	 */
+	jump_toMiiEdit: (argument: string) => void;
+
+	/**
+	 * Jumps to System Settings
+	 */
+	jump_toSettingsTop: () => void;
+
+	/**
+	 * Forces jump to System Settings?
+	 */
+	jump_toSettingsTopForce: () => void;
+
+	/**
+	 * Jumps to Parental Controls settings
+	 */
+	jump_toParentalControlSetting: () => void;
+
+	/**
+	 * Jumps to COPPACS settings
+	 */
+	jump_toCOPPACSSetting: () => void;
+
+	/**
+	 * Jumps to itself?
+	 */
+	jump_toSelf: () => void;
+
+	/**
+	 * Jumps to the caller?
+	 */
+	jump_toCaller: () => void;
+
+	/**
+	 * Jumps to the eShop and returns?
+	 */
+	jump_toShopBack: () => void;
+
+	/**
+	 * Unknown. Check if needed to jump to the eShop?
+	 * @returns True if needed?
+	 */
+	jump_needShopBack: () => boolean;
 
 	/**
 	 * Jumps to the home menu?
@@ -1124,6 +1861,12 @@ export default interface CaveAPI {
 	jump_getYoutubeVersion: () => number;
 
 	/**
+	 * Unknown
+	 * @returns Unknown
+	 */
+	jump_getAnchor: () => number;
+
+	/**
 	 * Start garbage collector
 	 */
 	requestGc: () => void;
@@ -1148,8 +1891,8 @@ export default interface CaveAPI {
 	home_setEnabled: (flag: boolean) => boolean;
 
 	/**
-	 * Checks if the currently running application is ACT (NNID Settings?)
-	 * @returns True if the currently running application is ACT (NNID Settings?)
+	 * Checks if the currently running application is ACT (NNID Settings)
+	 * @returns True if the currently running application is ACT (NNID Settings)
 	 */
 	isAct: () => boolean;
 
@@ -1158,6 +1901,12 @@ export default interface CaveAPI {
 	 * @returns True if the currently running application is Miiverse
 	 */
 	isOlv: () => boolean;
+
+	/**
+	 * Checks if the currently running application is SNAKE?
+	 * @returns True if the currently running application is SNAKE?
+	 */
+	isRunOnSnake: () => boolean;
 
 	/**
 	 * Unknown
