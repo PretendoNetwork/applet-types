@@ -63,18 +63,18 @@ export default interface WiiUBrowserAPI {
 	jumpToTvii: () => void;
 
 	/**
-	 * Opens a specific title
+	 * Opens a specific title with app data
 	 * @remark
 	 *
 	 * Only seen in Miiverse?
 	 *
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param unk5 - Unknown
+	 * @param titleID - Application title ID in decimal format
+	 * @param unk2 - Unknown. Dumps show "1" with no postID, and "2" with one. Both seem to work regardless
+	 * @param nexCommunityID - NEX Community ID, same ID used by the Miiverse API server
+	 * @param postAppData - Post App data provided by the in game post API
+	 * @param postID - Maybe optional? Empty string is passed in when unk2 is "1" but postAppData is always provided
 	 */
-	jumpToApplication: (unk1: string, unk2: number, unk3: number, unk4: string, unk5: string) => void;
+	jumpToApplication: (titleID: string, unk2: number, nexCommunityID: number, postAppData: string, postID: string) => void;
 
 	/**
 	 * Tells the applet it can stop the loading screen at boot. eShop requires a boolean flag, Miiverse does not
