@@ -39,7 +39,7 @@ export default interface WiiULocalStorageAPI {
 	clear: () => void;
 
 	/**
-	 * Unknown
+	 * Flushes localStorage manually without the user turning off the console
 	 */
 	write: () => void;
 }
