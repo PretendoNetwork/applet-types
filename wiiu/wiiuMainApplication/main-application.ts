@@ -1,10 +1,10 @@
 export default interface WiiUMainApplicationAPI {
 	/**
-	 * Unknown
-	 * @param unk - Unknown. Maybe a screen ID?
-	 * @returns Unknown
+	 * Returns a JPEG base64 screenshot
+	 * @param screen - True for TV screen, False for GamePad screen
+	 * @returns JPEG base64 screenshot
 	 */
-	getScreenShot: (unk: boolean) => string;
+	getScreenShot: (screen: boolean) => string;
 
 	/**
 	 * Gets the background titles AppData

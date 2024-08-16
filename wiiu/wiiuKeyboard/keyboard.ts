@@ -9,7 +9,7 @@ export default interface WiiUKeyboardAPI {
 
 	/**
 	 * Sets the keyboard language
-	 * @param language - Keyboard language. Allowed values unknown
+	 * @param language - Keyboard language. Result from wiiuSystemSetting.getLanguage().code
 	 * @returns True if success?
 	 *
 	 * @remarks

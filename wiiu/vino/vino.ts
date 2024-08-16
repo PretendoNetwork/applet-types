@@ -24,6 +24,93 @@ export const enum IRCodes {
 
 export type IRCode = Enumerize<IRCodes>;
 
+// TVii has some different sound effects for US/JP versions
+//Incomplete list
+export const enum SoundEffects {
+	COMMON_SELECT = 'SE_COMMON_SELECT',
+	COMMON_TOUCH_ON = 'SE_COMMON_TOUCH_ON',
+	COMMON_TOUCH_CANCEL = 'SE_COMMON_TOUCH_CANCEL',
+	COMMON_MOVE_CURSOR = 'SE_COMMON_MOVE_CURSOR',
+	COMMON_TEXTBOX = 'SE_COMMON_TEXTBOX',
+	APPEAR_DETAIL = 'SE_APPEAR_DETAIL',
+	APPEAR_DETAIL_2 = 'SE_APPEAR_DETAIL_2',
+	APPEAR_DETAIL_3 = 'SE_APPEAR_DETAIL_3',
+	SLIDER_CHANGE = 'SE_SLIDER_CHANGE',
+	REMOTE_COMMON = 'SE_REMOTE_COMMON',
+	REMOTE_FINISH = 'SE_REMOTE_FINISH',
+	REMOTE_FINISH1 = 'SE_REMOTE_FINISH1',
+	REMOTE_FINISH2 = 'SE_REMOTE_FINISH2',
+	REMOTE_FINISH3 = 'SE_REMOTE_FINISH3',
+	REMOTE_0 = 'SE_REMOTE_0',
+	REMOTE_1 = 'SE_REMOTE_1',
+	REMOTE_2 = 'SE_REMOTE_2',
+	REMOTE_3 = 'SE_REMOTE_3',
+	REMOTE_4 = 'SE_REMOTE_4',
+	REMOTE_5 = 'SE_REMOTE_5',
+	REMOTE_6 = 'SE_REMOTE_6',
+	REMOTE_7 = 'SE_REMOTE_7',
+	REMOTE_8 = 'SE_REMOTE_8',
+	REMOTE_9 = 'SE_REMOTE_9',
+	REMOTE_10 = 'SE_REMOTE_10',
+	REMOTE_11 = 'SE_REMOTE_11',
+	REMOTE_12 = 'SE_REMOTE_12',
+	NETWORK = 'SE_NETWORK',
+	REMINDER = 'SE_REMINDER',
+	AUTOSCREEN_APPEAR = 'SE_AUTOSCREEN_APPEAR',
+	AUTOSYNC_PRE = 'SE_AUTOSYNC_PRE',
+	DECIDE = 'SE_DECIDE',
+	DECIDE_TOUCH_OFF = 'SE_DECIDE_TOUCH_OFF',
+	DECIDE_SMALL = 'SE_DECIDE_SMALL',
+	DECIDE_SMALL_TOUCH_OFF = 'SE_DECIDE_SMALL_TOUCH_OFF',
+	DECIDE_US = 'SE_A_DECIDE',
+	DECIDE_US_TOUCH_OFF = 'SE_A_DECIDE_TOUCH_OFF',
+};
+
+export type SoundEffect = `${SoundEffects}`;
+
+// TODO - Name these fields better?
+export const enum BackgroundMusic {
+	APP_START = 'SE_APP_START',
+	APP_START_SUB = 'SE_APP_START_SUB',
+};
+
+export type BGM = `${BackgroundMusic}`;
+
+// TODO - Name these fields better?
+export const enum PINCheckResults {
+	CANCELED = -1,
+	INCORRECT = 0,
+	CORRECT: 1
+};
+
+export type PINResult = Enumerize<PINCheckResults>;
+
+// TODO - Name these fields better?
+export const enum MiiFeelings {
+	DEFAULT = 0, // * This is actually called "normal" internally but I feel like this makes more sense
+	HAPPY = 1,
+	WINK = 2, // * This is actually called "like" internally but I didn't feel like that made sense
+	SURPRISED = 3,
+	FRUSTRATED = 4,
+	PUZZLED = 5
+};
+
+export type MiiFeeling = Enumerize<MiiFeelings>;
+
+
+// TODO - Name these fields better?
+export const enum MiiFeelingsAct {
+	DEFAULT = 1, // * This is actually called "normal" internally but I feel like this makes more sense
+	HAPPY = 2,
+	WINK = 3, // * This is actually called "like" internally but I didn't feel like that made sense
+	SURPRISED = 4,
+	FRUSTRATED = 5,
+	PUZZLED = 6,
+	DEFAULT_BODY = 7
+};
+
+export type MiiFeelingAct = Enumerize<MiiFeelingsAct>;
+
 export default interface VinoAPI {
 	/**
 	 * Plays a sound by it's ID
@@ -34,10 +121,10 @@ export default interface VinoAPI {
 
 	/**
 	 * Plays a sound by it's label
-	 * @param label - Sounds label. Allowed values not known
+	 * @param label - Sounds label.
 	 * @returns Unknown
 	 */
-	soundPlay: (label: string) => number;
+	soundPlay: (label: SoundEffect | BGM) => number;
 
 	/**
 	 * Plays a sound by it's label and some number?
@@ -45,15 +132,15 @@ export default interface VinoAPI {
 	 * @param unk - Unknown. Volume?
 	 * @returns Unknown
 	 */
-	soundPlayEx: (label: string, unk: number) => number;
+	soundPlayEx: (label: SoundEffect | BGM, unk: number) => number;
 
 	/**
 	 * Plays a sound by it's label at a certain volume
-	 * @param label - Sounds label. Allowed values not known
+	 * @param label - Sounds label.
 	 * @param volume - Sounds volume
 	 * @returns Unknown
 	 */
-	soundPlayVolume: (label: string, volume: number) => number;
+	soundPlayVolume: (label: SoundEffect | BGM, volume: number) => number;
 
 	/**
 	 * Unknown
@@ -77,10 +164,10 @@ export default interface VinoAPI {
 
 	/**
 	 * Stops a sound by it's label
-	 * @param label - Sounds label. Allowed values not known
+	 * @param label - Sounds label.
 	 * @param unk - Unknown. ID?
 	 */
-	soundStopLabel: (label: string, unk: number) => void;
+	soundStopLabel: (label: SoundEffect, unk: number) => void;
 
 	/**
 	 * Stops all sounds
@@ -188,13 +275,13 @@ export default interface VinoAPI {
 	memo_getImageTgaCompressed: () => string;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
+	 * Draws the navigation box on an visible HTML element.
+	 * @param left - Result from element.getBoundingClientRect().left
+	 * @param top - Result from element.getBoundingClientRect().top
+	 * @param width - Result from element.getBoundingClientRect().width
+  	 * @param height - Result from element.getBoundingClientRect().height
 	 */
-	navi_set: (unk1: number, unk2: number, unk3: number, unk4: number) => void;
+	navi_set: (left: number, top: number, width: number, height: number) => void;
 
 	/**
 	 * Unknown
@@ -209,29 +296,29 @@ export default interface VinoAPI {
 	navi_setBaseVisibility: (unk: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Enables a light blue background on the navigation box
+	 * @param light - Enable light blue background if true
 	 */
-	navi_setBaseVisibilityOnKeyEvent: (unk: boolean) => void;
+	navi_setBaseVisibilityOnKeyEvent: (light: boolean) => void;
 
 	/**
-	 * Unknown
+	 * Resets any existing navigation box
 	 */
 	navi_reset: () => void;
 
 	/**
-	 * Unknown
+	 * Resets any existing navigation box, same as vino.navi_reset()?
 	 */
 	navi_resetWithoutDOMForcus: () => void;
 
 	/**
-	 * Unknown
+	 * Resets any navigation box with an selecting animation
 	 */
 	navi_decide: () => void;
 
 	/**
-	 * Unknown
-	 * @returns Unknown
+	 * Returns the rects of the HTML element the navigation box is currently on
+	 * @returns - comma separated rects (left, top, width, height)
 	 */
 	navi_getRect: () => string;
 
@@ -279,16 +366,16 @@ export default interface VinoAPI {
 	navi_setAreaOverSearch: (unk: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Changes navigation moving method
+	 * @param method - -1 disables navigation, 1 is default
 	 */
-	navi_setMoveMethod: (unk: number) => void;
+	navi_setMoveMethod: (method: number) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Disable navigation box movement to any section below
+	 * @param disable - Disable navigation box movement to below if true
 	 */
-	navi_setIsEnableMinusLocation: (unk: boolean) => void;
+	navi_setIsEnableMinusLocation: (disable: boolean) => void;
 
 	/**
 	 * Unknown
@@ -302,26 +389,26 @@ export default interface VinoAPI {
 	lyt_draw: (unk1: string, unk2: number, unk3: number, unk4: number, unk5: number, unk6: number) => void;
 
 	/**
-	 * Unknown
+	 * Resets the fixed red layout box
 	 */
 	lyt_reset: () => void;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
+  	 * Draws a fixed red layout box (Seen in Japanese TVii)
+	 * @param left - Left position in screen
+	 * @param top -  Top position in screen
+	 * @param width - Width of the layout box on screen
+  	 * @param height - Height of the layout box on screen
 	 */
-	lyt_drawFixedFrame: (unk1: number, unk2: number, unk3: number, unk4: number) => void;
+	lyt_drawFixedFrame: (left: number, top: number, width: number, height: number) => void;
 
 	/**
-	 * Unknown
+	 * Resets the fixed red layout box (Same as vino.lyt_reset()?)
 	 */
 	lyt_disappearFixedFrame: () => void;
 
 	/**
-	 * Unknown
+	 * Resets the fixed red layout box with an selecting animation
 	 */
 	lyt_decideFixedFrame: () => void;
 
@@ -332,19 +419,19 @@ export default interface VinoAPI {
 	lyt_setFixedFrameSemitransparency: (unk: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Enable or disable the white transition effect when changing page
+	 * @param enable - Enable white transition
 	 */
-	lyt_setIsEnableWhiteMask: (unk: boolean) => void;
+	lyt_setIsEnableWhiteMask: (enable: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Enable or disable loading icon when changing page
+	 * @param enable - Enable loading icon
 	 */
-	lyt_setIsEnableClientLoadingIcon: (unk: boolean) => void;
+	lyt_setIsEnableClientLoadingIcon: (enable: boolean) => void;
 
 	/**
-	 * Unknown
+	 * Shows a touch effect on the coords of the last user touch
 	 */
 	lyt_startTouchEffect: () => void;
 
@@ -354,11 +441,11 @@ export default interface VinoAPI {
 	lyt_startTouchEffectToFocused: () => void;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
+	 * Shows a touch effect on the screen manually
+	 * @param left - Left position in screen
+	 * @param top -  Top position in screen
 	 */
-	lyt_startTouchEffectByPos: (unk1: number, unk2: number) => void;
+	lyt_startTouchEffectByPos: (left: number, top: number) => void;
 
 	/**
 	 * Unknown
@@ -366,19 +453,19 @@ export default interface VinoAPI {
 	lyt_startTouchNodeEffectToFocused: () => void;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
+  	 * Shows a blue glow effect similar to the Internet Browser blue hover
+	 * @param left - Left position in screen
+	 * @param top -  Top position in screen
+	 * @param width - Width of the layout box on screen
+  	 * @param height - Height of the layout box on screen
 	 */
-	lyt_startTouchNodeEffect: (unk1: number, unk2: number, unk3: number, unk4: number) => void;
+	lyt_startTouchNodeEffect: (left: number, top: number, width: number, height: number) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Show or hide instantly the loading icon
+	 * @param flag - Show/hide
 	 */
-	loading_setIconVisibility: (unk: boolean) => void;
+	loading_setIconVisibility: (flag: boolean) => void;
 
 	/**
 	 * Show or hide the loading icon
@@ -387,74 +474,74 @@ export default interface VinoAPI {
 	loading_setIconAppear: (flag: boolean) => void;
 
 	/**
-	 * Sets the loading icon size?
-	 * @param x1 - Bounding box x1
-	 * @param x2 - Bounding box x2
-	 * @param y1 - Bounding box y1
-	 * @param y2 - Bounding box y2
+	 * Sets the loading icon position in screen
+	 * @param left - Left position in screen
+	 * @param top -  Top position in screen
+	 * @param width - Width of loading icon
+  	 * @param height - Height of loading icon
 	 */
-	loading_setIconRect: (x1: number, x2: number, y1: number, y2: number) => void;
+	loading_setIconRect: (left: number, top: number, width: number, height: number) => void;
 
 	/**
-	 * Opens the browser to the given URL
+	 * Opens the browser to the given URL, (if browser is closed, returns to TVii)
 	 * @param url - URL to jump to
-	 * @param unk - Unknown
+	 * @param confirm - Show confirmation message if true, jump inmediately if false
 	 */
-	jumpToBrowser: (url: string, unk: boolean) => void;
+	jumpToBrowser: (url: string, confirm: boolean) => void;
 
 	/**
 	 * Opens the eShop
-	 * @param unk1 - Unknown. Title ID?
-	 * @param unk2 - Unknown
+	 * @param query - eShop query (version=1.0.0&scene=detail&dst_title_id=ID_HERE&src_title_id=ID_HERE)
+	 * @param confirm - Show confirmation message if true, jump inmediately if false
 	 */
-	jumpToEShop: (unk1: string, unk2: boolean) => void;
+	jumpToEShop: (query: string, confirm: boolean) => void;
 
 	/**
 	 * Opens Miiverse
-	 * @param unk - Unknown
+	 * @param confirm - Show confirmation message if true, jump inmediately if false
 	 */
-	jumpToMiiverse: (unk: boolean) => void;
+	jumpToMiiverse: (confirm: boolean) => void;
 
 	/**
 	 * Opens Miiverse to a specific post
 	 * @param postID - Post ID
-	 * @param unk - Unknown
+	 * @param confirm - Show confirmation message if true, jump inmediately if false
 	 */
-	jumpToMiiversePostId: (postID: string, unk: boolean) => void;
+	jumpToMiiversePostId: (postID: string, confirm: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
+	 * Opens an video on demand app with a URL parameter
+	 * @param titleID - Titles title ID (hex)
+	 * @param URL - URL parameter to send to the VOD app
+	 * @param confirm - Show confirmation message if true, jump inmediately if false
 	 */
-	jumpToVod: (unk1: string, unk2: string, unk3: boolean) => void;
+	jumpToVod: (titleID: string, URL: string, confirm: boolean) => void;
 
 	/**
 	 * Open an installed title
 	 * @param titleID - Titles title ID (hex)
-	 * @param unk - Unknown
+	 * @param confirm - Show confirmation message if true, jump inmediately if false
 	 */
-	jumpToTitle: (titleID: string, unk: boolean) => void;
+	jumpToTitle: (titleID: string, confirm: boolean) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Opens System Settings on the TV Remote screen
+	 * @param confirm - Show confirmation message if true, jump inmediately if false
 	 */
-	jumpToSettingsTvRemote: (unk: boolean) => void;
+	jumpToSettingsTvRemote: (confirm: boolean) => void;
 
 	/**
-	 * Closes the app gracefully
+	 * Closes the app transitioning to the Wii U Menu/suspended app
 	 */
 	exit: () => void;
 
 	/**
-	 * Force closes the app
+	 * Closes the app directly to the HBM
 	 */
 	exitForce: () => void;
 
 	/**
-	 * Checks if TVii was launched by returning from a title (like eShop)
+	 * Checks if TVii was launched by returning from a title (like eShop, Internet Browser)
 	 * @returns True if returned from
 	 */
 	isReturnedFromOtherApplication: () => boolean;
@@ -474,7 +561,7 @@ export default interface VinoAPI {
 	 * @param rightButton - Right button text
 	 * @returns 1 if the left button selected, 0 if right button
 	 */
-	runTwoButtonDialog: (unk1: string, unk2: string, unk3: string) => number;
+	runTwoButtonDialog: (message: string, leftButton: string, rightButton: string) => number;
 
 	/**
 	 * Shows a 119-9XXX error code
@@ -490,14 +577,14 @@ export default interface VinoAPI {
 	runOliveErrorDialog: (errorCode: number) => boolean;
 
 	/**
-	 * Enable TVii for the TV?
+	 * Enables video playback on the TV screen
 	 * @param flag - Enable/disable
 	 * @returns Unknown
 	 */
 	video_enableOnTV: (flag: boolean) => boolean;
 
 	/**
-	 * Checks if TVii is on the TV or not?
+	 * Checks if video playback on TV is enabled or not
 	 * @returns True if enabled. Changed with vino.video_enableOnTV(true/false)
 	 */
 	video_isEnabledOnTV: () => boolean;
@@ -564,10 +651,10 @@ export default interface VinoAPI {
 	ir_isEnabled: () => boolean;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Mutes IR sound effect
+	 * @param disable - Disables sound effect if true
 	 */
-	ir_muteOneShotSound: (unk: boolean) => void;
+	ir_muteOneShotSound: (disable: boolean) => void;
 
 	/**
 	 * Opens a 4 digit PIN input for the parental control PIN
@@ -577,9 +664,9 @@ export default interface VinoAPI {
 
 	/**
 	 * Opens a 4 digit PIN input for the parental control PIN
-	 * @returns Unknown
+  	 * @returns {PINResult} Indicates result of the PIN check
 	 */
-	pc_runPINInput: () => number;
+	pc_runPINInput: () => PINResult;
 
 	/**
 	 * Checks if parental controls are enabled
@@ -619,7 +706,7 @@ export default interface VinoAPI {
 
 	/**
 	 * Checks if parental controls are enabled for Miiverse
-	 * @returns True if enabled
+	 * @returns -1 if disabled, 1 if posting is disabled, 2 if posting and viewing is disabled
 	 */
 	pc_getMiiverseControlLevel: () => number;
 
@@ -639,7 +726,7 @@ export default interface VinoAPI {
 
 	/**
 	 * Gets a Miiverse error code
-	 * @returns Always 1155004?
+	 * @returns 1155004 if Discovery error, can return an Miiverse Parental Controls error too
 	 */
 	olv_getErrorCodeOnInitialize: () => number;
 
@@ -653,61 +740,61 @@ export default interface VinoAPI {
 	 * Creates a text post on Miiverse
 	 * @param body - Post body
 	 * @param topicTag - Post topic_tag
-	 * @param communityID - Uint32 community ID
+	 * @param feeling - Mii feeling
 	 * @param spoiler - True if post contains spoilers
 	 * @param searchKey1 - Posts 1st search_key
 	 * @param searchKey2 - Posts 2nd search_key
 	 * @param searchKey3 - Posts 3rd search_key
 	 * @param searchKey4 - Posts 4th search_key
 	 * @param searchKey5 - Posts 5th search_key
-	 * @returns Unknown
+	 * @returns true if request started with success
 	 */
-	olv_postText: (body: string, topicTag: string, communityID: number, spoiler: boolean, searchKey1: string, searchKey2: string, searchKey3: string, searchKey4: string, searchKey5: string) => boolean;
+	olv_postText: (body: string, topicTag: string, feeling: MiiFeeling, spoiler: boolean, searchKey1: string, searchKey2: string, searchKey3: string, searchKey4: string, searchKey5: string) => boolean;
 
 	/**
 	 * Creates an image post on Miiverse
 	 * @param painting - Memo painting. Result from vino.memo_getImageTgaRaw()
 	 * @param topicTag - Post topic_tag
-	 * @param communityID - Uint32 community ID
+	 * @param feeling - Mii feeling
 	 * @param spoiler - True if post contains spoilers
 	 * @param searchKey1 - Posts 1st search_key
 	 * @param searchKey2 - Posts 2nd search_key
 	 * @param searchKey3 - Posts 3rd search_key
 	 * @param searchKey4 - Posts 4th search_key
 	 * @param searchKey5 - Posts 5th search_key
-	 * @returns Unknown
+	 * @returns true if request started with success
 	 */
-	olv_postImage: (painting: string, topicTag: string, communityID: number, spoiler: boolean, searchKey1: string, searchKey2: string, searchKey3: string, searchKey4: string, searchKey5: string) => boolean;
+	olv_postImage: (painting: string, topicTag: string, feeling: MiiFeeling, spoiler: boolean, searchKey1: string, searchKey2: string, searchKey3: string, searchKey4: string, searchKey5: string) => boolean;
 
 	/**
 	 * Creates a text post on Miiverse. Seems no different than vino.olv_postText()?
 	 * @param body - Post body
 	 * @param topicTag - Post topic_tag
-	 * @param communityID - Uint32 community ID
+	 * @param feeling - Mii feeling
 	 * @param spoiler - True if post contains spoilers
 	 * @param searchKey1 - Posts 1st search_key
 	 * @param searchKey2 - Posts 2nd search_key
 	 * @param searchKey3 - Posts 3rd search_key
 	 * @param searchKey4 - Posts 4th search_key
 	 * @param searchKey5 - Posts 5th search_key
-	 * @returns Unknown
+	 * @returns true if request started with success
 	 */
-	olv_postTextFixedPhrase: (body: string, topicTag: string, communityID: number, spoiler: boolean, searchKey1: string, searchKey2: string, searchKey3: string, searchKey4: string, searchKey5: string) => boolean;
+	olv_postTextFixedPhrase: (body: string, topicTag: string, feeling: MiiFeeling, spoiler: boolean, searchKey1: string, searchKey2: string, searchKey3: string, searchKey4: string, searchKey5: string) => boolean;
 
 	/**
 	 * Creates an image post on Miiverse. Seems no different than vino.olv_postImage()?
 	 * @param painting - Memo painting. Result from vino.memo_getImageTgaRaw()
 	 * @param topicTag - Post topic_tag
-	 * @param communityID - Uint32 community ID
+	 * @param feeling - Mii feeling
 	 * @param spoiler - True if post contains spoilers
 	 * @param searchKey1 - Posts 1st search_key
 	 * @param searchKey2 - Posts 2nd search_key
 	 * @param searchKey3 - Posts 3rd search_key
 	 * @param searchKey4 - Posts 4th search_key
 	 * @param searchKey5 - Posts 5th search_key
-	 * @returns Unknown
+	 * @returns true if request started with success
 	 */
-	olv_postImageFixedPhrase: (painting: string, topicTag: string, communityID: number, spoiler: boolean, searchKey1: string, searchKey2: string, searchKey3: string, searchKey4: string, searchKey5: string) => boolean;
+	olv_postImageFixedPhrase: (painting: string, topicTag: string, feeling: MiiFeeling, spoiler: boolean, searchKey1: string, searchKey2: string, searchKey3: string, searchKey4: string, searchKey5: string) => boolean;
 
 	/**
 	 * Unknown
@@ -764,10 +851,10 @@ export default interface VinoAPI {
 	/**
 	 * Gets the NNID Mii image for the slot
 	 * @param slot - User account slot. See vino.act_getCurrentSlotNo()
-	 * @param unk2 - Unknown
+	 * @param MiiFeelingAct - Mii feeling image to pull from
 	 * @returns Base64 encoded PNG
 	 */
-	act_getMiiImageEx: (slot: number, unk2: number) => string;
+	act_getMiiImageEx: (slot: number, feeling: MiiFeelingAct) => string;
 
 	/**
 	 * Gets the NNID PID for the slot
@@ -834,50 +921,50 @@ export default interface VinoAPI {
 	kbd_isAppearing: () => boolean;
 
 	/**
-	 * Unknown
-	 * @returns Unknown
+	 * True if suggestion is opening (input with attribute "vino_suggest" is clicked)
+	 * @returns true if opening
 	 */
 	suggest_isOpening: () => boolean;
 
 	/**
-	 * Unknown
-	 * @returns Unknown
+	 * Gets current value of the suggestion input
+	 * @returns Suggestion input value
 	 */
 	suggest_getString: () => string;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param unk5 - Unknown
-	 * @param unk6 - Unknown
-	 * @param unk7 - Unknown
-	 * @param unk8 - Unknown
-	 * @param unk9 - Unknown
-	 * @param unk10 - Unknown
+	 * Set suggestions on suggestion list
+	 * @param suggestion1 - Unknown
+	 * @param suggestion2 - Unknown
+	 * @param suggestion3 - Unknown
+	 * @param suggestion4 - Unknown
+	 * @param suggestion5 - Unknown
+	 * @param suggestion6 - Unknown
+	 * @param suggestion7 - Unknown
+	 * @param suggestion8 - Unknown
+	 * @param suggestion9 - Unknown
+	 * @param suggestion10 - Unknown
 	 */
-	suggest_set: (unk1: string, unk2: string, unk3: string, unk4: string, unk5: string, unk6: string, unk7: string, unk8: string, unk9: string, unk10: string) => void;
+	suggest_set: (suggestion1: string, suggestion2: string, suggestion3: string, suggestion4: string, suggestion5: string, suggestion6: string, suggestion7: string, suggestion8: string, suggestion9: string, suggestion10: string) => void;
 
 	/**
-	 * Unknown
+	 * Resets suggestion list
 	 */
 	suggest_reset: () => void;
 
 	/**
-	 * Unknown
+	 * Enables auto power down
 	 */
 	apd_enable: () => void;
 
 	/**
-	 * Unknown
+	 * Disables auto power down
 	 */
 	apd_disable: () => void;
 
 	/**
-	 * Unknown
-	 * @returns Unknown
+	 * Is auto power down enabled
+	 * @returns True if enabled
 	 */
 	apd_isEnabled: () => boolean;
 
@@ -888,14 +975,14 @@ export default interface VinoAPI {
 	apd_isWiiuEnabled: () => boolean;
 
 	/**
-	 * Unknown
-	 * @returns Unknown
+	 * Gets time left for auto power down trigger
+	 * @returns Time left
 	 */
 	apd_getPeriod: () => number;
 
 	/**
-	 * Unknown
-	 * @returns Unknown
+	 * Gets last period where auto power down happened?
+	 * @returns Last period
 	 */
 	apd_getLastTime: () => number;
 
@@ -966,18 +1053,18 @@ export default interface VinoAPI {
 	user_isAllowedToUploadInfo: () => boolean;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
+	 * Emulates a click in the screen
+	 * @param left - Left position in screen
+	 * @param top -  Top position in screen
+	 * @param clicks - How many clicks
 	 */
-	emulate_touch: (unk1: number, unk2: number, unk3: number) => void;
+	emulate_touch: (left: number, top: number, clicks: number) => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Delays emulated click
+	 * @param seconds -Seconds to delay
 	 */
-	emulate_inputDelay: (unk: number) => void;
+	emulate_inputDelay: (seconds: number) => void;
 
 	/**
 	 * Unknown
@@ -1003,38 +1090,38 @@ export default interface VinoAPI {
 	title_setAnimImageEx: (unk1: string, unk2: string, unk3: string, unk4: string, unk5: string, unk6: number) => boolean;
 
 	/**
-	 * Unknown
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
+	 * Sets an image in the title screen
+	 * @param URL - PNG image URL
+	 * @param imageKey - Image key
 	 * @param unk3 - Unknown
 	 * @param unk4 - Unknown
 	 * @param unk5 - Unknown
-	 * @param unk6 - Unknown
-	 * @returns Unknown
+	 * @param type - 1 if show on top normally, 2 if hide clock, 3 if show on top normally but move clock to the top
+	 * @returns True if image started requesting with success
 	 */
-	title_setFixedImage: (unk1: string, unk2: string, unk3: string, unk4: string, unk5: string, unk6: number) => boolean;
+	title_setFixedImage: (URL: string, imageKey: string, unk3: string, unk4: string, unk5: string, type: number) => boolean;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
+	 * Deletes an image from an image key
+	 * @param imageKey - Image key used to set an image
 	 */
-	title_deleteImage: (unk: string) => void;
+	title_deleteImage: (imageKey: string) => void;
 
 	/**
-	 * Unknown
+	 * Deletes all images saved
 	 */
 	title_clearImage: () => void;
 
 	/**
-	 * Unknown
-	 * @param unk - Unknown
-	 * @returns Unknown
+	 * Checks existance of an image by image key
+	 * @param imageKey - Image key used to set an image
+	 * @returns True if image exists
 	 */
-	title_hasImage: (unk: string) => boolean;
+	title_hasImage: (imageKey: string) => boolean;
 
 	/**
-	 * Unknown
-	 * @returns Unknown
+	 * Returns amount of images saved
+	 * @returns Amount of images
 	 */
 	title_getImageCount: () => number;
 }

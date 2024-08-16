@@ -9,10 +9,10 @@ export default interface WiiUBOSSAPI {
 
 	/**
 	 * Unknown. Registers a BOSS task?
-	 * @param unk - Unknown
-	 * @returns Unknown. Triggers no network requests. Only ever returns error code 111-4000
+	 * @param languageCode - Result from wiiuSystemSetting.getLanguage().code
+	 * @returns Empty object if success, else returns an error object.
 	 */
-	registerBossTask: (unk: string) => {
+	registerBossTask: (languageCode: string) => {
 		error?: {
 			code: number;
 		}
@@ -32,7 +32,9 @@ export default interface WiiUBOSSAPI {
 	 *
 	 * @returns Unknown
 	 */
-	isRegisteredDirectMessageTask: () => Record<any, any>;
+	isRegisteredDirectMessageTask: () => {
+		isRegistered: boolean;
+	};
 
 	/**
 	 * Unknown. Registers the DM BOSS task?
@@ -45,16 +47,16 @@ export default interface WiiUBOSSAPI {
 	registerDirectMessageTask: () => Record<any, any>;
 
 	/**
-	 * Unknown. Registers the DM BOSS task with extra data?
+	 * Registers the DM BOSS task with an lifetime and interval
 	 * @remark
 	 *
 	 * Only present in Miiverse
 	 *
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @returns Unknown
+	 * @param lifetime - Lifetime of the request
+	 * @param interval - Interval of the request
+	 * @returns Empty object if success, else returns an error object.
 	 */
-	registerDirectMessageTaskEx: (unk1: number, unk2: number) => Record<any, any>;
+	registerDirectMessageTaskEx: (lifetime: number, interval: number) => Record<any, any>;
 
 	/**
 	 * Unknown. Unregisters the DM BOSS task?

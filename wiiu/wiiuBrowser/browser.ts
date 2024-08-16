@@ -49,9 +49,9 @@ export default interface WiiUBrowserAPI {
 	 *
 	 * Only seen in Miiverse?
 	 *
-	 * @param unk - Unknown. Link?
+	 * @param query - eShop query format (version=1.0.0&scene=detail&dst_title_id=ID_HERE&src_title_id=ID_HERE)
 	 */
-	jumpToEshop: (unk: string) => void;
+	jumpToEshop: (query: string) => void;
 
 	/**
 	 * Opens TVii
@@ -63,18 +63,18 @@ export default interface WiiUBrowserAPI {
 	jumpToTvii: () => void;
 
 	/**
-	 * Opens a specific title
+	 * Opens a title with optional app params
 	 * @remark
 	 *
 	 * Only seen in Miiverse?
 	 *
-	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
-	 * @param unk3 - Unknown
-	 * @param unk4 - Unknown
-	 * @param unk5 - Unknown
+	 * @param tid - Application Title ID
+	 * @param flags - Spoiler flags? Miiverse JS call it like this, yet it always sets it to 1
+	 * @param nexCommunityID - Miiverse JS calls it NEX Community ID, but its more likely the community ID
+	 * @param appData - Post app data string
+	 * @param postID - Post ID? Miiverse JS always sets it to empty string
 	 */
-	jumpToApplication: (unk1: string, unk2: number, unk3: number, unk4: string, unk5: string) => void;
+	jumpToApplication: (tid: string, flags: number, nexCommunityID: number, appData: string, postID: string) => void;
 
 	/**
 	 * Tells the applet it can stop the loading screen at boot. eShop requires a boolean flag, Miiverse does not

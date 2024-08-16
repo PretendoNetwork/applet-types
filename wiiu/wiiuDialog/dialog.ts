@@ -16,13 +16,13 @@ export default interface WiiUDialogAPI {
 	confirm: (message: string, rightButton: string, leftButton: string) => boolean;
 
 	/**
-	 * Shows the loading spinner
+	 * Shows an loading message with a center loading spinner
 	 * @param message - Message in dialog
 	 */
 	showLoading: (message: string) => void;
 
 	/**
-	 * Stops the loading spinner
+	 * Stops the loading message
 	 */
 	hideLoading: () => void;
 }

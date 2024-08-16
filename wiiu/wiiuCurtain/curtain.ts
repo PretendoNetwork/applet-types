@@ -1,11 +1,11 @@
 export default interface WiiUCurtainAPI {
 	/**
-	 * Unknown
+	 * Hides the TV screen to show an screen prompting to use the Wii U GamePad (used on eShop for Credit Card settings)
 	 */
 	open: () => void;
 
 	/**
-	 * Unknown
+	 * Unhides the TV screen prompt
 	 */
 	close: () => void;
 }

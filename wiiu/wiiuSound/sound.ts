@@ -59,22 +59,22 @@ export default interface WiiUSoundAPI {
 	/**
 	 * Unknown. Plays a sound by an ID?
 	 * @param unk1 - Unknown
-	 * @param unk2 - Unknown
+	 * @param soundDevice - 1 for GamePad, 2 for TV, 3 for both
 	 * @returns An object. Always empty
 	 */
-	playSound: (unk1: number, unk2: number) => {};
+	playSound: (unk1: number, soundDevice: number) => {};
 
 	/**
 	 * Plays the given sound
 	 * @param label - Label for the sound
-	 * @param unk - Unknown
+	 * @param soundDevice - 1 for GamePad, 2 for TV, 3 for both
 	 * @returns An object. Always empty
 	 *
 	 * @remark
 	 *
 	 * Not all labels are available in every applet. Using an unsupported label plays no sound
 	 */
-	playSoundByName: (label: SoundEffect, unk: number) => {};
+	playSoundByName: (label: SoundEffect, soundDevice: number) => {};
 
 	/**
 	 * Unknown. Stops a sound?
